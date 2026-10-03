@@ -1,0 +1,26 @@
+{
+  "name": "dhanush-softwares-erp",
+  "version": "2.0.0",
+  "description": "Dhanush Softwares ERP - NextGen Enterprise Human Resource & Operations Management Platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "server": "node server.js",
+    "client": "npm --prefix client run dev",
+    "dev": "npm --prefix client run dev",
+    "build": "npm --prefix client run build",
+    "preview": "npm --prefix client run preview"
+  },
+  "keywords": [
+    "erp",
+    "hrms",
+    "react",
+    "vite",
+    "express",
+    "neon",
+    "postgresql",
+    "enterprise"
+  ],
+  "author": "Dhanush Murugan",
+  "license": "ISC"
+}

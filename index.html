@@ -1,0 +1,3608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="Dhanush Softwares Employee Management ERP"
+    >
+
+    <title>Dhanush Softwares ERP</title>
+
+    <link
+        rel="stylesheet"
+        href="/style.css"
+    >
+</head>
+
+<body>
+
+<!-- =====================================================
+     APPLICATION LOADING SCREEN
+===================================================== -->
+
+<div
+    id="appLoader"
+    class="app-loader"
+>
+    <div class="loader-content">
+        <div class="loader-logo">DS</div>
+
+        <h2>Dhanush Softwares</h2>
+
+        <p>Loading ERP...</p>
+
+        <div class="loader-spinner"></div>
+    </div>
+</div>
+
+
+<!-- =====================================================
+     LOGIN PAGE
+===================================================== -->
+
+<section
+    id="loginPage"
+    class="auth-page"
+>
+
+    <div class="auth-background"></div>
+
+    <div class="login-card">
+
+        <div class="login-brand">
+
+            <div class="brand-logo">
+                <img id="loginBrandLogo" src="/Dhanush.jpg" alt="Dhanush Softwares logo" class="brand-logo-image">
+                <span class="brand-logo-fallback">DS</span>
+            </div>
+
+            <div>
+                <h1>Dhanush Softwares</h1>
+                <p>Employee Management ERP</p>
+            </div>
+
+        </div>
+
+
+        <div class="login-heading">
+
+            <h2>Welcome Back 👋</h2>
+
+            <p>
+                Sign in to access your ERP dashboard
+            </p>
+
+        </div>
+
+
+        <form
+            id="loginForm"
+            autocomplete="on"
+        >
+
+            <div class="form-group">
+
+                <label for="loginEmail">
+                    Email Address
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        ✉
+                    </span>
+
+                    <input
+                        type="email"
+                        id="loginEmail"
+                        name="email"
+                        placeholder="Enter your email"
+                        autocomplete="username"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="loginPassword">
+                    Password
+                </label>
+
+                <div class="input-wrapper">
+
+                    <span class="input-icon">
+                        🔒
+                    </span>
+
+                    <input
+                        type="password"
+                        id="loginPassword"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="password-toggle"
+                        id="toggleLoginPassword"
+                        aria-label="Show password"
+                    >
+                        👁
+                    </button>
+
+                </div>
+
+            </div>
+
+
+            <div class="login-options">
+
+                <label class="checkbox-label">
+
+                    <input
+                        type="checkbox"
+                        id="rememberMe"
+                    >
+
+                    <span>
+                        Remember me
+                    </span>
+
+                </label>
+
+
+                <button
+                    type="button"
+                    class="link-button"
+                    id="forgotPasswordButton"
+                >
+                    Forgot Password?
+                </button>
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button login-button"
+                id="loginSubmitButton"
+            >
+                <span class="button-text">
+                    Login
+                </span>
+
+                <span
+                    class="button-loader hidden"
+                    aria-hidden="true"
+                >
+                    <span class="small-spinner"></span>
+                </span>
+            </button>
+
+        </form>
+
+
+        <div
+            id="loginMessage"
+            class="form-message hidden"
+        ></div>
+
+
+        <div class="login-security-note">
+
+            <span>🔐</span>
+
+            <span>
+                Secure database-based authentication
+            </span>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     FORGOT PASSWORD MODAL
+===================================================== -->
+
+<div
+    id="forgotPasswordModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="forgotPasswordModal"
+            aria-label="Close"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-icon">
+            🔑
+        </div>
+
+        <h2>Forgot Password?</h2>
+
+        <p>
+            Enter your registered email address to
+            generate a password reset request.
+        </p>
+
+
+        <form id="forgotPasswordForm">
+
+            <div class="form-group">
+
+                <label for="forgotEmail">
+                    Registered Email
+                </label>
+
+                <input
+                    type="email"
+                    id="forgotEmail"
+                    name="email"
+                    placeholder="Enter registered email"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Generate Reset Request
+            </button>
+
+        </form>
+
+
+        <div
+            id="forgotPasswordMessage"
+            class="form-message hidden"
+        ></div>
+
+
+        <div
+            id="resetTokenContainer"
+            class="reset-token-container hidden"
+        >
+
+            <label>
+                Development Reset Token
+            </label>
+
+            <div class="token-box">
+
+                <code id="resetToken"></code>
+
+                <button
+                    type="button"
+                    id="copyResetToken"
+                    class="icon-button"
+                    title="Copy token"
+                >
+                    📋
+                </button>
+
+            </div>
+
+            <p class="help-text">
+                In production, this token should be
+                delivered through email.
+            </p>
+
+        </div>
+
+
+        <form
+            id="resetPasswordForm"
+            class="hidden"
+        >
+
+            <input
+                type="hidden"
+                id="resetTokenInput"
+            >
+
+
+            <div class="form-group">
+
+                <label for="newResetPassword">
+                    New Password
+                </label>
+
+                <input
+                    type="password"
+                    id="newResetPassword"
+                    placeholder="Enter new password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="confirmResetPassword">
+                    Confirm Password
+                </label>
+
+                <input
+                    type="password"
+                    id="confirmResetPassword"
+                    placeholder="Confirm new password"
+                    minlength="6"
+                    required
+                >
+
+            </div>
+
+
+            <button
+                type="submit"
+                class="primary-button"
+            >
+                Reset Password
+            </button>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     MAIN ERP APPLICATION
+===================================================== -->
+
+<div
+    id="erpApp"
+    class="erp-app hidden"
+>
+
+
+<!-- =====================================================
+     SIDEBAR
+===================================================== -->
+
+<aside
+    id="sidebar"
+    class="sidebar"
+>
+
+    <div class="sidebar-brand">
+
+        <div class="brand-logo">
+            <img id="sidebarBrandLogo" src="/Dhanush.jpg" alt="Dhanush Softwares logo" class="brand-logo-image">
+            <span class="brand-logo-fallback">DS</span>
+        </div>
+
+        <div class="sidebar-brand-text">
+
+            <strong>
+                Dhanush
+            </strong>
+
+            <span>
+                Softwares
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <div class="sidebar-profile">
+
+        <div
+            id="sidebarUserAvatar"
+            class="user-avatar"
+        >
+            DS
+        </div>
+
+        <div class="sidebar-user-info">
+
+            <strong id="sidebarUserName">
+                User
+            </strong>
+
+            <span id="sidebarUserRole">
+                Employee
+            </span>
+
+        </div>
+
+        <span
+            id="sidebarStatusDot"
+            class="status-dot active"
+        ></span>
+
+    </div>
+
+
+    <nav
+        id="mainNavigation"
+        class="sidebar-navigation"
+    >
+
+        <!-- Dashboard -->
+
+        <button
+            class="nav-item active"
+            data-page="dashboard"
+        >
+            <span class="nav-icon">📊</span>
+            <span class="nav-label">Dashboard</span>
+        </button>
+
+
+        <!-- Employees -->
+
+        <button
+            class="nav-item admin-only"
+            data-page="employees"
+        >
+            <span class="nav-icon">👥</span>
+            <span class="nav-label">Employees</span>
+        </button>
+
+
+        <!-- Attendance -->
+
+        <button
+            class="nav-item"
+            data-page="attendance"
+        >
+            <span class="nav-icon">🕘</span>
+            <span class="nav-label">Attendance</span>
+        </button>
+
+
+        <!-- Leave -->
+
+        <button
+            class="nav-item"
+            data-page="leaves"
+        >
+            <span class="nav-icon">🏖️</span>
+            <span class="nav-label">Leave Management</span>
+        </button>
+
+
+        <!-- Projects -->
+
+        <button
+            class="nav-item"
+            data-page="projects"
+        >
+            <span class="nav-icon">📁</span>
+            <span class="nav-label">Projects</span>
+        </button>
+
+
+        <!-- Chat -->
+
+        <button
+            class="nav-item"
+            data-page="chat"
+        >
+            <span class="nav-icon">💬</span>
+            <span class="nav-label">Chat</span>
+
+            <span
+                id="chatUnreadBadge"
+                class="nav-badge hidden"
+            >
+                0
+            </span>
+
+        </button>
+
+
+        <!-- Payroll -->
+
+        <button
+            class="nav-item"
+            data-page="payroll"
+        >
+            <span class="nav-icon">💰</span>
+            <span class="nav-label">Payroll</span>
+        </button>
+        <!-- Announcements -->
+
+        <button
+            class="nav-item"
+            data-page="announcements"
+        >
+            <span class="nav-icon">📢</span>
+            <span class="nav-label">Announcements</span>
+        </button>
+
+
+        <!-- Reports -->
+
+        <button
+            class="nav-item admin-only"
+            data-page="reports"
+        >
+            <span class="nav-icon">📈</span>
+            <span class="nav-label">Reports</span>
+        </button>
+
+
+        <!-- AI -->
+
+        <button
+            class="nav-item"
+            data-page="ai"
+        >
+            <span class="nav-icon">🤖</span>
+            <span class="nav-label">AI Assistant</span>
+        </button>
+
+
+        <!-- Settings -->
+
+        <button
+            class="nav-item"
+            data-page="settings"
+        >
+            <span class="nav-icon">⚙️</span>
+            <span class="nav-label">Settings</span>
+        </button>
+
+    </nav>
+
+
+    <div class="sidebar-bottom">
+
+        <button
+            type="button"
+            id="sidebarLogoutButton"
+            class="sidebar-logout"
+        >
+            <span>🚪</span>
+            <span>Logout</span>
+        </button>
+
+    </div>
+
+</aside>
+
+
+<!-- =====================================================
+     MAIN CONTENT AREA
+===================================================== -->
+
+<main class="main-content">
+
+
+<!-- =====================================================
+     TOPBAR
+===================================================== -->
+
+<header class="topbar">
+
+    <div class="topbar-left">
+
+        <button
+            type="button"
+            id="sidebarToggle"
+            class="icon-button menu-toggle"
+            aria-label="Toggle sidebar"
+            title="Toggle sidebar"
+        >
+            <span id="sidebarToggleIcon" aria-hidden="true"></span>
+        </button>
+
+
+        <div class="page-heading">
+
+            <h1 id="currentPageTitle">
+                Dashboard
+            </h1>
+
+            <p id="currentPageSubtitle">
+                Welcome to your ERP dashboard
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="topbar-right">
+
+        <!-- Notifications -->
+
+        <button
+            type="button"
+            id="notificationButton"
+            class="topbar-icon-button"
+            aria-label="Notifications"
+        >
+
+            🔔
+
+            <span
+                id="notificationBadge"
+                class="notification-badge hidden"
+            >
+                0
+            </span>
+
+        </button>
+
+        <button
+            type="button"
+            id="themeToggleBtn"
+            class="topbar-icon-button theme-toggle-button"
+            aria-label="Toggle theme"
+            title="Toggle light/dark mode"
+        >
+            <span id="themeToggleIcon" aria-hidden="true"></span>
+        </button>
+
+
+        <!-- User -->
+
+        <div
+            id="topbarUserMenu"
+            class="topbar-user"
+        >
+
+            <div
+                id="topbarUserAvatar"
+                class="user-avatar small"
+            >
+                DS
+            </div>
+
+            <div class="topbar-user-info">
+
+                <strong id="topbarUserName">
+                    User
+                </strong>
+
+                <span id="topbarUserRole">
+                    Employee
+                </span>
+
+            </div>
+
+            <span class="dropdown-arrow">
+                ▾
+            </span>
+
+        </div>
+
+    </div>
+
+</header>
+
+
+<!-- =====================================================
+     NOTIFICATION PANEL
+===================================================== -->
+
+<div
+    id="notificationPanel"
+    class="notification-panel hidden"
+>
+
+    <div class="notification-panel-header">
+
+        <div>
+            <h3>Notifications</h3>
+            <span id="notificationCountText">
+                No notifications
+            </span>
+        </div>
+
+        <button
+            type="button"
+            id="markNotificationsRead"
+            class="text-button"
+        >
+            Mark all read
+        </button>
+
+    </div>
+
+
+    <div
+        id="notificationList"
+        class="notification-list"
+    >
+
+        <div class="empty-state compact">
+            <div class="empty-icon">🔔</div>
+            <p>No notifications</p>
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PAGE CONTAINER
+===================================================== -->
+
+<div
+    id="pageContainer"
+    class="page-container"
+>
+
+
+<!-- =====================================================
+     DASHBOARD PAGE
+===================================================== -->
+
+<section
+    id="page-dashboard"
+    class="page-section active"
+    data-page-section="dashboard"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Dashboard
+            </h2>
+
+            <p>
+                Overview of your employee management system
+            </p>
+
+        </div>
+
+
+        <div class="dashboard-date">
+            <span>📅</span>
+            <span id="dashboardCurrentDate">Loading...</span>
+            <button type="button" id="dashboardHeaderIdButton" class="dashboard-id-download" title="Download my ID card">🪪 ID Card</button><button type="button" id="dashboardHeaderPayslipButton" class="dashboard-id-download employee-only" title="Download latest payslip">💳 Payslip</button>
+        </div>
+
+    </div>
+
+
+    <!-- Admin dashboard statistics -->
+
+    <div
+        id="adminStats"
+        class="stats-grid admin-only"
+    >
+
+        <article class="stat-card">
+
+            <div class="stat-icon employees">
+                👥
+            </div>
+
+            <div class="stat-content">
+
+                <span>Total Employees</span>
+
+                <strong id="statTotalEmployees">
+                    0
+                </strong>
+
+                <small>
+                    All employee accounts
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-icon active">
+                🟢
+            </div>
+
+            <div class="stat-content">
+
+                <span>Active Employees</span>
+
+                <strong id="statActiveEmployees">
+                    0
+                </strong>
+
+                <small>
+                    Currently active
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-icon leave">
+                🏖️
+            </div>
+
+            <div class="stat-content">
+
+                <span>Pending Leaves</span>
+
+                <strong id="statPendingLeaves">
+                    0
+                </strong>
+
+                <small>
+                    Need approval
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-icon projects">
+                📁
+            </div>
+
+            <div class="stat-content">
+
+                <span>Active Projects</span>
+
+                <strong id="statActiveProjects">
+                    0
+                </strong>
+
+                <small>
+                    In progress
+                </small>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <!-- Employee statistics -->
+
+    <div
+        id="employeeStats"
+        class="stats-grid employee-only"
+    >
+
+        <article class="stat-card">
+
+            <div class="stat-icon attendance">
+                🕘
+            </div>
+
+            <div class="stat-content">
+
+                <span>My Attendance</span>
+
+                <strong id="statMyAttendance">
+                    0%
+                </strong>
+
+                <small>
+                    Current month
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-icon leave">
+                🏖️
+            </div>
+
+            <div class="stat-content">
+
+                <span>My Pending Leaves</span>
+
+                <strong id="statMyLeaves">
+                    0
+                </strong>
+
+                <small>
+                    Pending requests
+                </small>
+
+            </div>
+
+        </article>
+
+
+        <article class="stat-card">
+
+            <div class="stat-icon projects">
+                📁
+            </div>
+
+            <div class="stat-content">
+
+                <span>My Projects</span>
+
+                <strong id="statMyProjects">
+                    0
+                </strong>
+
+                <small>
+                    Assigned projects
+                </small>
+
+            </div>
+
+        </article>
+
+    </div>
+
+
+    <div class="dashboard-grid">
+
+
+        <!-- Attendance summary -->
+
+        <article class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Attendance Overview
+                    </h3>
+
+                    <p>
+                        Recent attendance activity
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    data-navigate="attendance"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="dashboardAttendance"
+                class="dashboard-table-container"
+            >
+
+                <div class="loading-placeholder">
+                    Loading attendance...
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Recent projects -->
+
+        <article class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Recent Projects
+                    </h3>
+
+                    <p>
+                        Latest project activity
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    data-navigate="projects"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="dashboardProjects"
+                class="dashboard-table-container"
+            >
+
+                <div class="loading-placeholder">
+                    Loading projects...
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Leave requests -->
+
+        <article
+            class="dashboard-card admin-only"
+        >
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Leave Requests
+                    </h3>
+
+                    <p>
+                        Requests waiting for action
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    data-navigate="leaves"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="dashboardLeaves"
+                class="dashboard-table-container"
+            >
+
+                <div class="loading-placeholder">
+                    Loading leaves...
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Announcements -->
+
+        <article class="dashboard-card">
+
+            <div class="card-header">
+
+                <div>
+
+                    <h3>
+                        Announcements
+                    </h3>
+
+                    <p>
+                        Latest company updates
+                    </p>
+
+                </div>
+
+                <button
+                    type="button"
+                    class="text-button"
+                    data-navigate="announcements"
+                >
+                    View All
+                </button>
+
+            </div>
+
+
+            <div
+                id="dashboardAnnouncements"
+                class="announcement-preview-list"
+            >
+
+                <div class="loading-placeholder">
+                    Loading announcements...
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+    <div class="dashboard-personal-grid">
+        <article class="dashboard-card id-card-panel employee-only">
+            <div class="card-header">
+                <div><h3>My Employee ID</h3><p>Digital identity card</p></div>
+                <button type="button" class="text-button" id="dashboardIdButton">View ID</button>
+            </div>
+            <div id="dashboardIdCard" class="dashboard-id-card"></div>
+        </article>
+
+        <article class="dashboard-card payslip-panel employee-only">
+            <div class="card-header">
+                <div><h3>Latest Salary Slip</h3><p>Attendance, projects and salary summary</p></div>
+                <button type="button" class="text-button" id="dashboardPayslipButton">View Slip</button>
+            </div>
+            <div id="dashboardPayslip" class="dashboard-payslip"></div>
+        </article>
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     EMPLOYEES PAGE
+===================================================== -->
+
+<section
+    id="page-employees"
+    class="page-section"
+    data-page-section="employees"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Employee Management
+            </h2>
+
+            <p>
+                Create and manage employee accounts
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="addEmployeeButton"
+            class="primary-button"
+        >
+            <span>＋</span>
+            Add Employee
+        </button>
+
+    </div>
+
+
+    <div class="filter-toolbar">
+
+        <div class="toolbar-search">
+
+            <span>🔍</span>
+
+            <input
+                type="search"
+                id="employeeSearch"
+                placeholder="Search employees..."
+            >
+
+        </div>
+
+
+        <select
+            id="employeeDepartmentFilter"
+            class="select-input"
+        >
+            <option value="">
+                All Departments
+            </option>
+        </select>
+
+
+        <select
+            id="employeeStatusFilter"
+            class="select-input"
+        >
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Active">
+                Active
+            </option>
+
+            <option value="Inactive">
+                Inactive
+            </option>
+        </select>
+
+
+        <select
+            id="employeeRoleFilter"
+            class="select-input"
+        >
+            <option value="">
+                All Roles
+            </option>
+
+            <option value="SUPER_ADMIN">
+                Super Admin
+            </option>
+
+            <option value="HR">
+                HR
+            </option>
+
+            <option value="EMPLOYEE">
+                Employee
+            </option>
+        </select>
+
+    </div>
+
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+
+                <h3>
+                    Employees
+                </h3>
+
+                <span id="employeeCount">
+                    0 employees
+                </span>
+
+            </div>
+
+            <button
+                type="button"
+                id="refreshEmployees"
+                class="secondary-button"
+            >
+                🔄 Refresh
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Employee</th>
+                        <th>Employee ID</th>
+                        <th>Department</th>
+                        <th>Designation</th>
+                        <th>Role</th>
+                        <th>Status</th>
+                        <th>Joining Date</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="employeesTableBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ATTENDANCE PAGE
+===================================================== -->
+
+<section
+    id="page-attendance"
+    class="page-section"
+    data-page-section="attendance"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Attendance
+            </h2>
+
+            <p>
+                Track daily employee attendance
+            </p>
+
+        </div>
+
+
+        <div class="header-actions">
+
+            <input
+                type="date"
+                id="attendanceDate"
+                class="date-input"
+            >
+
+            <button
+                type="button"
+                id="saveAttendanceButton"
+                class="primary-button admin-only"
+            >
+                💾 Save Attendance
+            </button>
+
+        </div>
+
+    </div>
+
+
+    <div class="attendance-summary-grid">
+
+        <article class="mini-stat">
+
+            <span>Present</span>
+
+            <strong id="attendancePresentCount">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>Absent</span>
+
+            <strong id="attendanceAbsentCount">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>Leave</span>
+
+            <strong id="attendanceLeaveCount">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>Half Day</span>
+
+            <strong id="attendanceHalfDayCount">
+                0
+            </strong>
+
+        </article>
+
+    </div>
+
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+
+                <h3>
+                    Attendance Records
+                </h3>
+
+                <span>
+                    Daily attendance details
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Employee</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                        <th>Check In</th>
+                        <th>Check Out</th>
+                        <th>Department</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="attendanceTableBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     LEAVE PAGE
+===================================================== -->
+
+<section
+    id="page-leaves"
+    class="page-section"
+    data-page-section="leaves"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Leave Management
+            </h2>
+
+            <p>
+                Manage employee leave requests
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="applyLeaveButton"
+            class="primary-button employee-only"
+        >
+            ＋ Apply Leave
+        </button>
+
+    </div>
+
+
+    <div class="filter-toolbar">
+
+        <select
+            id="leaveStatusFilter"
+            class="select-input"
+        >
+
+            <option value="">
+                All Status
+            </option>
+
+            <option value="Pending">
+                Pending
+            </option>
+
+            <option value="Approved">
+                Approved
+            </option>
+
+            <option value="Rejected">
+                Rejected
+            </option>
+
+        </select>
+
+
+        <select
+            id="leaveTypeFilter"
+            class="select-input"
+        >
+
+            <option value="">
+                All Leave Types
+            </option>
+
+            <option value="Casual Leave">
+                Casual Leave
+            </option>
+
+            <option value="Sick Leave">
+                Sick Leave
+            </option>
+
+            <option value="Earned Leave">
+                Earned Leave
+            </option>
+
+            <option value="Emergency Leave">
+                Emergency Leave
+            </option>
+
+        </select>
+
+    </div>
+
+
+    <div class="data-card attendance-review-card">
+        <div class="data-card-header">
+            <div>
+                <h3>Attendance Review</h3>
+                <span>Filter a month and employee, then download the Excel report.</span>
+            </div>
+            <button type="button" id="exportLeavePageAttendance" class="secondary-button admin-only">📥 Download Excel</button>
+        </div>
+        <div class="filter-toolbar attendance-review-toolbar">
+            <input type="month" id="leaveAttendanceMonth" class="date-input">
+            <select id="leaveAttendanceEmployee" class="select-input">
+                <option value="ALL">All Employees</option>
+            </select>
+        </div>
+        <div class="attendance-review-summary" id="leaveAttendanceSummary"></div>
+        <div id="attendanceCalendarGrid" class="attendance-calendar-grid"></div>
+        <div class="table-wrapper">
+            <table class="data-table">
+                <thead><tr><th>Employee</th><th>Days</th><th>Present</th><th>Absent</th><th>Leave</th><th>Half Day</th><th>Attendance %</th></tr></thead>
+                <tbody id="leaveAttendanceTableBody"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+
+                <h3>
+                    Leave Requests
+                </h3>
+
+                <span id="leaveCount">
+                    0 requests
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Employee</th>
+                        <th>Leave Type</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>Reason</th>
+                        <th>Status</th>
+                        <th>Applied</th>
+                        <th>Actions</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="leavesTableBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PROJECTS PAGE
+===================================================== -->
+
+<section
+    id="page-projects"
+    class="page-section"
+    data-page-section="projects"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Projects
+            </h2>
+
+            <p>
+                Track assigned projects and progress
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="addProjectButton"
+            class="primary-button admin-only"
+        >
+            ＋ Assign Project
+        </button>
+
+    </div>
+
+
+    <div class="project-summary-grid">
+
+        <article class="mini-stat">
+            <span>Assigned</span>
+            <strong id="projectAssignedCount">0</strong>
+        </article>
+
+        <article class="mini-stat">
+            <span>In Progress</span>
+            <strong id="projectProgressCount">0</strong>
+        </article>
+
+        <article class="mini-stat">
+            <span>Pending Review</span>
+            <strong id="projectReviewCount">0</strong>
+        </article>
+
+        <article class="mini-stat">
+            <span>Completed</span>
+            <strong id="projectCompletedCount">0</strong>
+        </article>
+
+    </div>
+
+
+    <div class="project-grid" id="projectsGrid">
+
+        <div class="loading-placeholder">
+            Loading projects...
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     CHAT PAGE
+===================================================== -->
+
+<section
+    id="page-chat"
+    class="page-section"
+    data-page-section="chat"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Internal Chat
+            </h2>
+
+            <p>
+                Communicate securely with employees
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div id="chatContainer" class="chat-container">
+
+        <aside class="chat-sidebar">
+
+            <div class="chat-sidebar-header">
+
+                <h3>
+                    Employees
+                </h3>
+
+                <button
+                    type="button"
+                    id="refreshChatUsers"
+                    class="icon-button"
+                >
+                    🔄
+                </button>
+
+            </div>
+
+
+            <div class="chat-search">
+
+                <span>🔍</span>
+
+                <input
+                    type="search"
+                    id="chatUserSearch"
+                    placeholder="Search employees..."
+                >
+
+            </div>
+
+
+            <div
+                id="chatUserList"
+                class="chat-user-list"
+            ></div>
+
+        </aside>
+
+
+        <section class="chat-main">
+
+            <header class="chat-header">
+
+                <button type="button" id="chatMobileBack" class="icon-button chat-mobile-back" aria-label="Back to employees" title="Back to employees">←</button>
+
+                <div
+                    id="selectedChatAvatar"
+                    class="user-avatar"
+                >
+                    ?
+                </div>
+
+                <div>
+
+                    <strong
+                        id="selectedChatName"
+                    >
+                        Select an employee
+                    </strong>
+
+                    <span
+                        id="selectedChatStatus"
+                    >
+                        Choose someone to start chatting
+                    </span>
+
+                </div>
+
+
+                <div class="chat-header-actions">
+
+                    <button
+                        type="button"
+                        id="clearChatButton"
+                        class="icon-button"
+                        title="Clear conversation"
+                    >
+                        🗑️
+                    </button>
+
+                </div>
+
+            </header>
+
+
+            <div
+                id="chatMessages"
+                class="chat-messages"
+            >
+
+                <div class="chat-empty-state">
+
+                    <div>
+                        💬
+                    </div>
+
+                    <h3>
+                        Start a conversation
+                    </h3>
+
+                    <p>
+                        Select an employee from the list.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                id="chatForm"
+                class="chat-input-area"
+            >
+
+                <input
+                    type="text"
+                    id="chatMessageInput"
+                    placeholder="Type a message..."
+                    autocomplete="off"
+                    disabled
+                >
+
+                <button
+                    type="submit"
+                    id="chatSendButton"
+                    class="primary-button"
+                    disabled
+                >
+                    ➤
+                </button>
+
+            </form>
+
+        </section>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     PAYROLL PAGE
+===================================================== -->
+
+<section
+    id="page-payroll"
+    class="page-section"
+    data-page-section="payroll"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Payroll
+            </h2>
+
+            <p>
+                Salary and payroll information
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="payroll-summary-grid">
+
+        <article class="mini-stat admin-only">
+
+            <span>
+                Total Payroll
+            </span>
+
+            <strong id="payrollTotal">
+                ₹0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>
+                Net Salary
+            </span>
+
+            <strong id="payrollNetSalary">
+                ₹0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>
+                Processed
+            </span>
+
+            <strong id="payrollProcessedCount">
+                0
+            </strong>
+
+        </article>
+
+
+        <article class="mini-stat">
+
+            <span>
+                Pending
+            </span>
+
+            <strong id="payrollPendingCount">
+                0
+            </strong>
+
+        </article>
+
+    </div>
+
+
+    <div class="data-card">
+
+        <div class="data-card-header">
+
+            <div>
+
+                <h3>
+                    Payroll Records
+                </h3>
+
+                <span>
+                    Salary information from database
+                </span>
+
+            </div>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table class="data-table">
+
+                <thead>
+
+                    <tr>
+
+                        <th>Employee</th>
+                        <th>Month</th>
+                        <th>Basic Salary</th>
+                        <th>Allowances</th>
+                        <th>Overtime</th>
+                        <th>Deductions</th>
+                        <th>Net Salary</th>
+                        <th>Status</th>
+
+                    </tr>
+
+                </thead>
+
+                <tbody
+                    id="payrollTableBody"
+                ></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     ANNOUNCEMENTS PAGE
+===================================================== -->
+
+<section
+    id="page-announcements"
+    class="page-section"
+    data-page-section="announcements"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Announcements
+            </h2>
+
+            <p>
+                Company announcements and updates
+            </p>
+
+        </div>
+
+
+        <button
+            type="button"
+            id="addAnnouncementButton"
+            class="primary-button admin-only"
+        >
+            ＋ New Announcement
+        </button>
+
+    </div>
+
+
+    <div
+        id="announcementsGrid"
+        class="announcements-grid"
+    ></div>
+
+</section>
+
+
+<!-- =====================================================
+     REPORTS PAGE
+===================================================== -->
+
+<section
+    id="page-reports"
+    class="page-section"
+    data-page-section="reports"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Reports
+            </h2>
+
+            <p>
+                Generate reports from Neon PostgreSQL
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="report-selector-grid">
+
+        <button
+            type="button"
+            class="report-card"
+            data-report="employees"
+        >
+            <span>👥</span>
+            <strong>Employee Report</strong>
+            <small>Employee details and status</small>
+        </button>
+
+
+        <button
+            type="button"
+            class="report-card"
+            data-report="attendance"
+        >
+            <span>🕘</span>
+            <strong>Attendance Report</strong>
+            <small>Attendance records</small>
+        </button>
+
+
+        <button
+            type="button"
+            class="report-card"
+            data-report="leaves"
+        >
+            <span>🏖️</span>
+            <strong>Leave Report</strong>
+            <small>Leave requests and status</small>
+        </button>
+
+
+        <button
+            type="button"
+            class="report-card"
+            data-report="projects"
+        >
+            <span>📁</span>
+            <strong>Project Report</strong>
+            <small>Project progress and ratings</small>
+        </button>
+
+
+        <button
+            type="button"
+            class="report-card"
+            data-report="payroll"
+        >
+            <span>💰</span>
+            <strong>Payroll Report</strong>
+            <small>Salary and payroll data</small>
+        </button>
+</div>
+
+
+    <div
+        id="reportResult"
+        class="data-card hidden"
+    >
+
+        <div class="data-card-header">
+
+            <div>
+
+                <h3 id="reportResultTitle">
+                    Report
+                </h3>
+
+                <span id="reportResultCount">
+                    0 records
+                </span>
+
+            </div>
+
+
+            <button
+                type="button"
+                id="exportReportButton"
+                class="secondary-button"
+            >
+                📥 Export
+            </button>
+
+        </div>
+
+
+        <div class="table-wrapper">
+
+            <table
+                id="reportTable"
+                class="data-table"
+            >
+
+                <thead id="reportTableHead"></thead>
+
+                <tbody id="reportTableBody"></tbody>
+
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     AI ASSISTANT PAGE
+===================================================== -->
+
+<section
+    id="page-ai"
+    class="page-section"
+    data-page-section="ai"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                AI Assistant A♥
+            </h2>
+
+            <p>
+                Ask questions about your ERP
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="ai-layout">
+
+
+        <aside class="ai-sidebar">
+
+            <div class="ai-brand">
+
+                <div class="ai-icon" aria-label="A AI Assistant">A<span>♥</span></div>
+
+                <div>
+
+                    <strong>
+                        ERP AI Assistant
+                    </strong>
+
+                    <span>
+                        Intelligent helper
+                    </span>
+
+                </div>
+
+            </div>
+
+
+
+            <button type="button" id="datingChatButton" class="ai-dating-button" title="Temporary playful chat mode">💗 Dating Chat</button>
+
+            <div class="ai-suggestions">
+
+                <p>
+                    Try asking:
+                </p>
+
+
+                <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-ai-question="Give me a summary of the employee management system."
+                >
+                    📊 ERP Summary
+                </button>
+
+
+                <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-ai-question="Explain the current employee data."
+                >
+                    👥 Employee Insights
+                </button>
+
+
+                <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-ai-question="Explain attendance management in this ERP."
+                >
+                    🕘 Attendance Help
+                </button>
+
+
+                <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-ai-question="Explain the leave management process."
+                >
+                    🏖️ Leave Help
+                </button>
+
+
+                <button
+                    type="button"
+                    class="ai-suggestion"
+                    data-ai-question="Give me project management suggestions."
+                >
+                    📁 Project Help
+                </button>
+
+            </div>
+
+        </aside>
+
+
+        <section class="ai-chat">
+
+            <div
+                id="aiMessages"
+                class="ai-messages"
+            >
+
+                <div class="ai-welcome">
+
+                    <div class="ai-welcome-icon">
+                        🤖
+                    </div>
+
+                    <h3>
+                        Hello! I'm your ERP AI Assistant
+                    </h3>
+
+                    <p>
+                        I can help you understand your
+                        employee management system and
+                        ERP information.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form
+                id="aiForm"
+                class="ai-input-area"
+            >
+
+                <textarea
+                    id="aiMessageInput"
+                    rows="1"
+                    placeholder="Ask your ERP assistant..."
+                ></textarea>
+
+
+                <button
+                    type="submit"
+                    id="aiSendButton"
+                    class="primary-button"
+                >
+                    ➤
+                </button>
+
+            </form>
+
+
+            <p class="ai-disclaimer">
+                AI responses should be verified before
+                making important business decisions.
+            </p>
+
+        </section>
+
+    </div>
+
+</section>
+
+
+<!-- =====================================================
+     SETTINGS PAGE
+===================================================== -->
+
+<section
+    id="page-settings"
+    class="page-section"
+    data-page-section="settings"
+>
+
+    <div class="page-section-header">
+
+        <div>
+
+            <h2>
+                Settings
+            </h2>
+
+            <p>
+                Manage your account and ERP preferences
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <div class="settings-grid">
+
+
+        <!-- Profile -->
+
+        <article class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    👤
+                </div>
+
+                <div>
+
+                    <h3>
+                        My Profile
+                    </h3>
+
+                    <p>
+                        Your account information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="settingsProfile"
+                class="profile-details"
+            ></div>
+
+            <div class="profile-upload-row">
+                <label for="selfProfileImage">Profile Photo</label>
+                <input id="selfProfileImage" type="file" accept="image/png,image/jpeg,image/webp">
+                <button type="button" id="saveSelfProfileButton" class="secondary-button">Save Photo</button>
+                <div id="selfProfileMessage" class="form-message hidden"></div>
+            </div>
+
+        </article>
+
+
+        <!-- Password -->
+
+        <article class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    🔐
+                </div>
+
+                <div>
+
+                    <h3>
+                        Change Password
+                    </h3>
+
+                    <p>
+                        Keep your account secure
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <form id="changePasswordForm">
+
+                <div class="form-group">
+
+                    <label>
+                        Current Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="currentPassword"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="newPassword"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Confirm New Password
+                    </label>
+
+                    <input
+                        type="password"
+                        id="confirmNewPassword"
+                        minlength="6"
+                        required
+                    >
+
+                </div>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Change Password
+                </button>
+
+            </form>
+
+
+            <div
+                id="changePasswordMessage"
+                class="form-message hidden"
+            ></div>
+
+        </article>
+
+
+        <!-- Admin profile -->
+        <article class="settings-card admin-only">
+            <div class="settings-card-header">
+                <div class="settings-icon">✦</div>
+                <div><h3>Admin Profile</h3><p>Only Super Admin can edit these details</p></div>
+            </div>
+            <form id="adminProfileForm">
+                <div class="form-grid">
+                    <div class="form-group"><label>Name</label><input id="adminProfileName" required></div>
+                    <div class="form-group"><label>Email</label><input id="adminProfileEmail" type="email" required></div>
+                    <div class="form-group"><label>Phone</label><input id="adminProfilePhone"></div>
+                    <div class="form-group"><label>Designation</label><input id="adminProfileDesignation"></div>
+                    <div class="form-group"><label>Salary</label><input id="adminProfileSalary" type="number" min="0"></div>
+                    <div class="form-group"><label>Profile Photo</label><input id="adminProfileImage" type="file" accept="image/png,image/jpeg,image/webp"></div>
+                </div>
+                <div class="form-group"><label>Address</label><textarea id="adminProfileAddress" rows="3"></textarea></div>
+                <div id="adminProfileMessage" class="form-message hidden"></div>
+                <button type="submit" class="primary-button">Save Admin Profile</button>
+            </form>
+        </article>
+
+        <!-- Branding -->
+        <article class="settings-card admin-only">
+            <div class="settings-card-header">
+                <div class="settings-icon">◈</div>
+                <div><h3>Company Branding</h3><p>Upload the logo shown on login and sidebar</p></div>
+            </div>
+            <div class="branding-preview"><img id="settingsLogoPreview" src="" alt="Company logo"><div><strong>Dhanush Softwares</strong><span>ERP Company Logo</span></div></div>
+            <div class="form-group"><label>Company Logo</label><input id="companyLogoInput" type="file" accept="image/png,image/jpeg,image/webp"></div>
+            <button type="button" id="saveBrandingButton" class="primary-button">Save Company Logo</button>
+            <div id="brandingMessage" class="form-message hidden"></div>
+        </article>
+
+        <!-- System -->
+
+        <article class="settings-card admin-only">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    ⚙️
+                </div>
+
+                <div>
+
+                    <h3>
+                        System
+                    </h3>
+
+                    <p>
+                        ERP system information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="system-info-list">
+
+                <div>
+                    <span>Database</span>
+                    <strong>Neon PostgreSQL</strong>
+                </div>
+
+                <div>
+                    <span>Backend</span>
+                    <strong>Node.js + Express</strong>
+                </div>
+
+                <div>
+                    <span>Authentication</span>
+                    <strong>JWT Authentication</strong>
+                </div>
+
+                <div>
+                    <span>AI</span>
+                    <strong>Backend Integrated</strong>
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- Security -->
+
+        <article class="settings-card">
+
+            <div class="settings-card-header">
+
+                <div class="settings-icon">
+                    🛡️
+                </div>
+
+                <div>
+
+                    <h3>
+                        Security
+                    </h3>
+
+                    <p>
+                        Account security information
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="security-status-list">
+
+                <div class="security-status-item">
+
+                    <span class="security-check">
+                        ✓
+                    </span>
+
+                    <span>
+                        Database authentication enabled
+                    </span>
+
+                </div>
+
+
+                <div class="security-status-item">
+
+                    <span class="security-check">
+                        ✓
+                    </span>
+
+                    <span>
+                        Password hashing enabled
+                    </span>
+
+                </div>
+
+
+                <div class="security-status-item">
+
+                    <span class="security-check">
+                        ✓
+                    </span>
+
+                    <span>
+                        Session protection enabled
+                    </span>
+
+                </div>
+
+
+                <div class="security-status-item">
+
+                    <span class="security-check">
+                        ✓
+                    </span>
+
+                    <span>
+                        Role-based access enabled
+                    </span>
+
+                </div>
+
+            </div>
+
+        </article>
+
+    </div>
+
+</section>
+
+
+</div>
+<!-- END PAGE CONTAINER -->
+
+
+</main>
+<!-- END MAIN CONTENT -->
+
+</div>
+<!-- END ERP APP -->
+
+
+<!-- Floating Gemini AI Assistant -->
+<div id="floatingAiWidget" class="floating-ai-widget">
+    <button type="button" id="floatingAiButton" class="floating-ai-button" aria-label="Open AI Assistant">A<span>♥</span></button>
+    <div id="floatingAiPanel" class="floating-ai-panel hidden">
+        <div class="floating-ai-header"><div><strong>A♥ AI Assistant</strong><span>ERP Assistant</span></div><button type="button" id="floatingAiClose">×</button></div>
+        <div id="floatingAiMessages" class="floating-ai-messages"><div class="ai-mini-welcome">Ask me anything about your ERP.</div></div>
+        <form id="floatingAiForm" class="floating-ai-form"><input id="floatingAiInput" placeholder="Ask Gemini..." autocomplete="off"><button type="submit">➤</button></form>
+    </div>
+</div>
+
+
+<div id="payrollModal" class="modal hidden" aria-hidden="true">
+  <div class="modal-overlay"></div>
+  <div class="modal-card">
+    <button type="button" class="modal-close" data-close-modal="payrollModal">×</button>
+    <div class="modal-header"><div><h2>Salary Payroll</h2><p>Credit salary and generate the employee slip</p></div></div>
+    <form id="payrollForm">
+      <div class="form-grid">
+        <div class="form-group"><label>Employee *</label><select id="payrollEmployee" required></select></div>
+        <div class="form-group"><label>Month *</label><input type="month" id="payrollMonth" required></div>
+        <div class="form-group"><label>Basic Salary</label><input type="number" id="payrollBasic" min="0" step="0.01" required></div>
+        <div class="form-group"><label>Allowances</label><input type="number" id="payrollAllowances" min="0" step="0.01" value="0"></div>
+        <div class="form-group"><label>Deductions</label><input type="number" id="payrollDeductions" min="0" step="0.01" value="0"></div>
+        <div class="form-group"><label>Status</label><select id="payrollStatus"><option value="pending">Pending</option><option value="credited">Credited</option></select></div>
+      </div>
+      <div class="form-group"><label>Net Salary</label><input id="payrollNet" type="number" readonly></div>
+      <div id="payrollFormMessage" class="form-message hidden"></div>
+      <div class="modal-footer"><button type="button" class="secondary-button" data-close-modal="payrollModal">Cancel</button><button type="submit" class="primary-button">Save Payroll</button></div>
+    </form>
+  </div>
+</div>
+
+<!-- =====================================================
+     EMPLOYEE MODAL
+===================================================== -->
+
+<div
+    id="employeeModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card large">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="employeeModal"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2 id="employeeModalTitle">
+                    Add Employee
+                </h2>
+
+                <p>
+                    Create an employee account in Neon PostgreSQL
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="employeeForm">
+
+            <input
+                type="hidden"
+                id="employeeId"
+            >
+
+
+            <div class="form-grid">
+
+
+                <div class="form-group">
+
+                    <label>
+                        Employee ID
+                    </label>
+
+                    <input
+                        type="text"
+                        id="employeeCode"
+                        placeholder="EMP001"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Full Name *
+                    </label>
+
+                    <input
+                        type="text"
+                        id="employeeName"
+                        placeholder="Enter full name"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Email *
+                    </label>
+
+                    <input
+                        type="email"
+                        id="employeeEmail"
+                        placeholder="employee@gmail.com"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Password *
+                    </label>
+
+                    <input
+                        type="password"
+                        id="employeePassword"
+                        placeholder="Minimum 6 characters"
+                        minlength="6"
+                    >
+
+                    <small>
+                        Required when creating a new employee.
+                    </small>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="employeeImage">Profile Photo</label>
+
+                    <div class="employee-photo-upload">
+                        <div
+                            id="employeeImagePreview"
+                            class="employee-image-preview"
+                        >
+                            <span>👤</span>
+                        </div>
+
+                        <div class="employee-photo-controls">
+                            <input
+                                type="file"
+                                id="employeeImage"
+                                accept="image/png,image/jpeg,image/webp"
+                            >
+                            <small>
+                                JPG, PNG or WebP · maximum 10 MB
+                            </small>
+                        </div>
+                    </div>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Department
+                    </label>
+
+                    <select
+                        id="employeeDepartment"
+                    >
+                        <option value="">
+                            Select Department
+                        </option>
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Designation
+                    </label>
+
+                    <input
+                        type="text"
+                        id="employeeDesignation"
+                        placeholder="Software Developer"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Phone
+                    </label>
+
+                    <input
+                        type="tel"
+                        id="employeePhone"
+                        placeholder="+91..."
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Role
+                    </label>
+
+                    <select
+                        id="employeeRole"
+                    >
+
+                        <option value="EMPLOYEE">
+                            Employee
+                        </option>
+
+                        <option value="HR">
+                            HR
+                        </option>
+
+                        <option value="SUPER_ADMIN">
+                            Super Admin
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Joining Date
+                    </label>
+
+                    <input
+                        type="date"
+                        id="employeeJoiningDate"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Salary
+                    </label>
+
+                    <input
+                        type="number"
+                        id="employeeSalary"
+                        min="0"
+                        step="0.01"
+                        placeholder="0"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Account Status
+                    </label>
+
+                    <select
+                        id="employeeAccountStatus"
+                    >
+
+                        <option value="Active">
+                            Active
+                        </option>
+
+                        <option value="Inactive">
+                            Inactive
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Aadhaar Number
+                    </label>
+
+                    <input
+                        type="text"
+                        id="employeeAadhaar"
+                        placeholder="Optional"
+                    >
+
+                </div>
+
+
+                <div class="form-group full-width">
+
+                    <label>
+                        Address
+                    </label>
+
+                    <textarea
+                        id="employeeAddress"
+                        rows="3"
+                        placeholder="Employee address"
+                    ></textarea>
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="employeeFormMessage"
+                class="form-message hidden"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    data-close-modal="employeeModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                    id="saveEmployeeButton"
+                >
+                    Save Employee
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     LEAVE MODAL
+===================================================== -->
+
+<div
+    id="leaveModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="leaveModal"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Apply Leave
+                </h2>
+
+                <p>
+                    Submit a new leave request
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="leaveForm">
+
+            <div class="form-group">
+
+                <label>
+                    Leave Type *
+                </label>
+
+                <select
+                    id="leaveType"
+                    required
+                >
+
+                    <option value="">
+                        Select leave type
+                    </option>
+
+                    <option value="Casual Leave">
+                        Casual Leave
+                    </option>
+
+                    <option value="Sick Leave">
+                        Sick Leave
+                    </option>
+
+                    <option value="Earned Leave">
+                        Earned Leave
+                    </option>
+
+                    <option value="Emergency Leave">
+                        Emergency Leave
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        From Date *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="leaveFromDate"
+                        required
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        To Date *
+                    </label>
+
+                    <input
+                        type="date"
+                        id="leaveToDate"
+                        required
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Reason *
+                </label>
+
+                <textarea
+                    id="leaveReason"
+                    rows="4"
+                    placeholder="Enter reason for leave..."
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div
+                id="leaveFormMessage"
+                class="form-message hidden"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    data-close-modal="leaveModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Submit Leave
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     PROJECT MODAL
+===================================================== -->
+
+<div
+    id="projectModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="projectModal"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    Assign Project
+                </h2>
+
+                <p>
+                    Assign a project to an employee
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="projectForm">
+
+            <div class="form-group">
+
+                <label>
+                    Employee *
+                </label>
+
+                <select
+                    id="projectEmployee"
+                    required
+                >
+                    <option value="">
+                        Select employee
+                    </option>
+                </select>
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Project Name *
+                </label>
+
+                <input
+                    type="text"
+                    id="projectName"
+                    placeholder="Enter project name"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-grid">
+
+                <div class="form-group">
+
+                    <label>
+                        Priority
+                    </label>
+
+                    <select
+                        id="projectPriority"
+                    >
+
+                        <option value="Low">
+                            Low
+                        </option>
+
+                        <option
+                            value="Medium"
+                            selected
+                        >
+                            Medium
+                        </option>
+
+                        <option value="High">
+                            High
+                        </option>
+
+                        <option value="Urgent">
+                            Urgent
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label>
+                        Deadline
+                    </label>
+
+                    <input
+                        type="date"
+                        id="projectDeadline"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div
+                id="projectFormMessage"
+                class="form-message hidden"
+            ></div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    data-close-modal="projectModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Assign Project
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+<!-- =====================================================
+     ANNOUNCEMENT MODAL
+===================================================== -->
+
+<div
+    id="announcementModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="announcementModal"
+        >
+            ×
+        </button>
+
+
+        <div class="modal-header">
+
+            <div>
+
+                <h2>
+                    New Announcement
+                </h2>
+
+                <p>
+                    Share an update with employees
+                </p>
+
+            </div>
+
+        </div>
+
+
+        <form id="announcementForm">
+
+            <div class="form-group">
+
+                <label>
+                    Title *
+                </label>
+
+                <input
+                    type="text"
+                    id="announcementTitle"
+                    required
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label>
+                    Message *
+                </label>
+
+                <textarea
+                    id="announcementMessage"
+                    rows="6"
+                    required
+                ></textarea>
+
+            </div>
+
+
+            <div class="modal-footer">
+
+                <button
+                    type="button"
+                    class="secondary-button"
+                    data-close-modal="announcementModal"
+                >
+                    Cancel
+                </button>
+
+
+                <button
+                    type="submit"
+                    class="primary-button"
+                >
+                    Publish Announcement
+                </button>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     EMPLOYEE ACTION MENU / CONFIRM MODAL
+===================================================== -->
+
+<div
+    id="confirmModal"
+    class="modal hidden"
+    aria-hidden="true"
+>
+
+    <div class="modal-overlay"></div>
+
+    <div class="modal-card small">
+
+        <button
+            type="button"
+            class="modal-close"
+            data-close-modal="confirmModal"
+        >
+            ×
+        </button>
+
+
+        <div class="confirm-icon">
+            ⚠️
+        </div>
+
+
+        <h2 id="confirmTitle">
+            Confirm Action
+        </h2>
+
+
+        <p id="confirmMessage">
+            Are you sure?
+        </p>
+
+
+        <div class="modal-footer">
+
+            <button
+                type="button"
+                id="confirmCancel"
+                class="secondary-button"
+            >
+                Cancel
+            </button>
+
+
+            <button
+                type="button"
+                id="confirmAction"
+                class="danger-button"
+            >
+                Confirm
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- =====================================================
+     TOAST CONTAINER
+===================================================== -->
+
+<div
+    id="toastContainer"
+    class="toast-container"
+></div>
+
+
+<!-- =====================================================
+     GLOBAL JAVASCRIPT
+===================================================== -->
+
+<script
+    src="/script.js"
+    defer
+></script>
+
+</body>
+</html>
