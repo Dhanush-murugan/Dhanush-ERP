@@ -31,14 +31,24 @@ const getStored = (key, fallback) => {
       localStorage.setItem(`ds_erp_${key}`, JSON.stringify(fallback));
       return fallback;
     }
-    // Auto-migrate legacy chat cache with dummy sender IDs or self-referencing messages to official DB messages
+    // Auto-migrate legacy payroll cache if empty or partial
+    if (key === "payroll" && Array.isArray(parsed) && parsed.length < 50) {
+      localStorage.setItem(`ds_erp_${key}`, JSON.stringify(fallback));
+      return fallback;
+    }
+    // Auto-migrate legacy chat cache to official clean DB messages
     if (
       key === "chat" &&
-      Array.isArray(parsed) &&
-      (parsed.some((m) => Number(m.sender_id) === Number(m.receiver_id) || (m.id === 101 && m.sender_id === 2)) ||
-        localStorage.getItem("ds_erp_chat_v") !== "v3")
+      (!Array.isArray(parsed) ||
+        parsed.some(
+          (m) =>
+            Number(m.sender_id) === Number(m.receiver_id) ||
+            (m.id === 101 && m.sender_id === 2) ||
+            (m.sender_name === "Shalini Sundaram" && Number(m.sender_id) !== 14)
+        ) ||
+        localStorage.getItem("ds_erp_chat_v") !== "v8_clean_isolate")
     ) {
-      localStorage.setItem("ds_erp_chat_v", "v3");
+      localStorage.setItem("ds_erp_chat_v", "v8_clean_isolate");
       localStorage.setItem(`ds_erp_${key}`, JSON.stringify(fallback));
       return fallback;
     }
@@ -597,7 +607,11 @@ export const api = {
   async getPayroll() {
     try {
       const data = await request("/payroll");
-      return data.payroll || data;
+      const list = data.payroll || data;
+      if (Array.isArray(list) && list.length > 0) {
+        return list;
+      }
+      return fallbackPayroll;
     } catch (e) {
       return fallbackPayroll;
     }
@@ -937,6 +951,43 @@ export const api = {
         method: "POST",
         body: JSON.stringify({ sender_id: sId, user_id: curId })
       });
+    } catch {}
+
+    return true;
+  },
+
+  clearChatHistory(otherUserId, currentUserId = null) {
+    let curId = currentUserId;
+    if (!curId) {
+      try {
+        const u = JSON.parse(localStorage.getItem("ds_erp_user") || "{}");
+        if (u && u.id) curId = Number(u.id);
+      } catch {}
+    }
+    curId = Number(curId || 1);
+    const otherId = Number(otherUserId);
+
+    const currentChat = getStored("chat", fallbackChat) || [];
+    const filtered = currentChat.filter((m) => {
+      const sId = Number(m.sender_id);
+      const rId = Number(m.receiver_id);
+      const isBetweenTheseTwo =
+        (sId === curId && rId === otherId) ||
+        (sId === otherId && rId === curId);
+      return !isBetweenTheseTwo;
+    });
+
+    setStored("chat", filtered);
+    fallbackChat = filtered;
+
+    try {
+      if (typeof window !== "undefined") {
+        window.dispatchEvent(
+          new CustomEvent("ds_chat_sync", {
+            detail: { action: "cleared", contactId: otherId }
+          })
+        );
+      }
     } catch {}
 
     return true;

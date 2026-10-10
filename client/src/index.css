@@ -4437,6 +4437,10 @@ button {
   display: flex !important;
 }
 
+.show-on-mobile-compact {
+  display: none !important;
+}
+
 /* --------------------------------------------------------------------------
    19. INSTAGRAM DIRECT MESSAGE AESTHETIC TEAM CHAT
    -------------------------------------------------------------------------- */
@@ -4846,6 +4850,11 @@ button {
 .ig-header-presence {
   font-size: 11.5px;
   color: var(--text-muted);
+}
+
+.ig-header-presence.is-online {
+  color: #10b981;
+  font-weight: 500;
 }
 
 .ig-header-actions {
@@ -5504,6 +5513,10 @@ button {
     top: 0;
     left: 0;
     bottom: 0;
+    height: 100vh;
+    height: 100dvh;
+    display: flex;
+    flex-direction: column;
     width: 280px !important;
     max-width: 85vw;
     z-index: 999;
@@ -5511,6 +5524,22 @@ button {
     transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
     box-shadow: none;
     background-color: var(--bg-sidebar);
+  }
+
+  .erp-sidebar .sidebar-nav {
+    flex: 1 1 auto !important;
+    min-height: 0 !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  .erp-sidebar .sidebar-footer {
+    flex-shrink: 0 !important;
+    position: sticky !important;
+    bottom: 0 !important;
+    z-index: 10 !important;
+    background: var(--bg-sidebar, #0e1320) !important;
+    border-top: 1px solid var(--border-subtle) !important;
   }
 
   .erp-sidebar.mobile-open {
@@ -5547,30 +5576,111 @@ button {
     display: none !important;
   }
 
+  .mobile-only {
+    display: flex !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+
+  .show-on-mobile-compact {
+    display: inline !important;
+  }
+
+  .hide-on-mobile-compact {
+    display: none !important;
+  }
+
   .erp-navbar {
-    padding: 0 14px;
-    height: 60px;
+    padding: 0 12px !important;
+    height: 58px !important;
+    gap: 8px !important;
+    width: 100% !important;
+    box-sizing: border-box !important;
+    justify-content: space-between !important;
+  }
+
+  .navbar-left {
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    flex-shrink: 0 !important;
+    min-width: 0 !important;
+  }
+
+  .navbar-breadcrumb {
+    min-width: 0 !important;
+    display: flex !important;
+    align-items: center !important;
   }
 
   .navbar-page-title {
-    font-size: 14.5px;
-    max-width: 130px;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    font-size: 14px !important;
+    max-width: 105px !important;
+    white-space: nowrap !important;
+    overflow: hidden !important;
+    text-overflow: ellipsis !important;
   }
 
   .navbar-right {
-    gap: 8px;
+    display: flex !important;
+    align-items: center !important;
+    gap: 7px !important;
+    flex-shrink: 0 !important;
   }
 
+  /* User requested: Remove punch-in/out button on mobile view */
   .navbar-punch-btn {
-    padding: 5px 10px;
-    font-size: 11px;
+    display: none !important;
+  }
+
+  .navbar-ai-shortcut-btn {
+    padding: 5px 9px !important;
+    font-size: 11.5px !important;
+    gap: 4px !important;
+    border-radius: 12px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .navbar-icon-btn {
+    width: 35px !important;
+    height: 35px !important;
+    min-width: 35px !important;
+    padding: 0 !important;
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    border-radius: 10px !important;
+    flex-shrink: 0 !important;
+  }
+
+  .navbar-user-trigger {
+    display: flex !important;
+    align-items: center !important;
+    padding: 2px !important;
+    cursor: pointer !important;
+    flex-shrink: 0 !important;
+  }
+
+  .navbar-user-avatar {
+    width: 35px !important;
+    height: 35px !important;
+    min-width: 35px !important;
+    font-size: 13.5px !important;
+    font-weight: 700 !important;
+    border: 2px solid rgba(99, 102, 241, 0.7) !important;
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.45) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: var(--grad-primary) !important;
+    color: #fff !important;
+    border-radius: 50% !important;
   }
 
   .navbar-search-btn {
-    display: none;
+    display: none !important;
   }
 
   /* Chat Pane on mobile */
@@ -5583,31 +5693,242 @@ button {
   }
   .chat-mobile-back-btn {
     display: flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.06);
-    border: none;
-    color: var(--text-primary);
+    align-items: center !important;
+    justify-content: center !important;
+    width: 32px !important;
+    height: 32px !important;
+    border-radius: 50% !important;
+    background: rgba(255, 255, 255, 0.06) !important;
+    border: none !important;
+    color: var(--text-primary) !important;
   }
 
   /* Attendance Terminal on mobile */
   .attendance-terminal-card {
-    flex-direction: column;
-    padding: 16px;
-    gap: 18px;
+    flex-direction: column !important;
+    padding: 16px !important;
+    gap: 18px !important;
   }
   .terminal-status-section {
-    width: 100%;
+    width: 100% !important;
   }
   .shift-counters-row {
-    flex-wrap: wrap;
-    gap: 12px;
+    flex-wrap: wrap !important;
+    gap: 12px !important;
   }
   .attendance-kpi-grid {
     grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  /* User Dropdown Menu Fixed on Mobile */
+  .user-dropdown-menu {
+    position: fixed !important;
+    top: 60px !important;
+    right: 8px !important;
+    left: auto !important;
+    width: min(300px, calc(100vw - 16px)) !important;
+    max-width: calc(100vw - 16px) !important;
+    z-index: 9999 !important;
+    background: var(--bg-card-solid, #141b2d) !important;
+    border: 1px solid var(--border-medium, rgba(255, 255, 255, 0.15)) !important;
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7), 0 0 0 1px rgba(99, 102, 241, 0.3) !important;
+    border-radius: 14px !important;
+    padding: 10px !important;
+  }
+
+  .notifications-menu {
+    position: fixed !important;
+    top: 60px !important;
+    right: 8px !important;
+    width: min(340px, calc(100vw - 16px)) !important;
+    max-width: calc(100vw - 16px) !important;
+    z-index: 9999 !important;
+  }
+
+  .navbar-user-avatar {
+    width: 36px !important;
+    height: 36px !important;
+    min-width: 36px !important;
+    font-size: 14px !important;
+    font-weight: 700 !important;
+    border: 2px solid #818cf8 !important;
+    box-shadow: 0 0 12px rgba(99, 102, 241, 0.6) !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    background: linear-gradient(135deg, #6366f1 0%, #a855f7 100%) !important;
+    color: #ffffff !important;
+    border-radius: 50% !important;
+  }
+
+  .mobile-drawer-signout-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, rgba(239, 68, 68, 0.22) 0%, rgba(220, 38, 38, 0.35) 100%);
+    border: 1px solid rgba(239, 68, 68, 0.45);
+    color: #f87171;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .mobile-drawer-signout-btn:hover {
+    background: rgba(239, 68, 68, 0.4);
+    color: #fff;
+  }
+
+  /* Dashboard Mobile View Enhancements - Roomy & Comfortable */
+  .page-dashboard-container {
+    padding: 12px 12px !important;
+  }
+
+  .dashboard-welcome-banner {
+    padding: 16px 14px !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 12px !important;
+    border-radius: 16px !important;
+    margin-bottom: 14px !important;
+  }
+
+  .welcome-pill {
+    margin-bottom: 4px !important;
+    font-size: 10px !important;
+    padding: 2px 8px !important;
+  }
+
+  .welcome-title {
+    font-size: 18px !important;
+    line-height: 1.3 !important;
+    margin-bottom: 4px !important;
+    white-space: normal !important;
+    word-break: normal !important;
+  }
+
+  .welcome-subtitle {
+    font-size: 12px !important;
+    line-height: 1.4 !important;
+    margin-bottom: 10px !important;
+    color: var(--text-secondary) !important;
+  }
+
+  .welcome-employee-meta-bar {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    gap: 6px !important;
+    margin-top: 4px !important;
+    margin-bottom: 8px !important;
+    width: 100% !important;
+  }
+
+  .emp-meta-chip {
+    padding: 4px 8px !important;
+    font-size: 11px !important;
+    border-radius: 8px !important;
+    background: rgba(255, 255, 255, 0.05) !important;
+    border: 1px solid var(--border-subtle) !important;
+  }
+
+  .welcome-quick-actions {
+    display: grid !important;
+    grid-template-columns: repeat(2, 1fr) !important;
+    width: 100% !important;
+    gap: 8px !important;
+    margin-top: 6px !important;
+  }
+
+  .welcome-quick-actions .btn {
+    width: 100% !important;
+    justify-content: center !important;
+    padding: 8px 10px !important;
+    font-size: 11.5px !important;
+    border-radius: 10px !important;
+  }
+
+  .welcome-banner-graphic {
+    display: none !important;
+  }
+
+  /* Stat cards on mobile: modern 2-column grid */
+  .stats-cards-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 10px !important;
+    margin-bottom: 16px !important;
+  }
+
+  .stat-card {
+    padding: 14px 12px !important;
+    border-radius: 14px !important;
+  }
+
+  .stat-icon-wrapper {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  .stat-card-value {
+    font-size: 20px !important;
+  }
+
+  .stat-card-subtitle {
+    font-size: 10.5px !important;
+  }
+
+  /* Central Visual Analytics Row */
+  .attendance-radial-content {
+    flex-direction: column !important;
+    align-items: center !important;
+    gap: 18px !important;
+    text-align: center !important;
+  }
+
+  .attendance-breakdown-list {
+    width: 100% !important;
+  }
+
+  .breakdown-item {
+    padding: 8px 10px !important;
+  }
+
+  /* Projects Progress on Mobile */
+  .project-row-top {
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: 6px !important;
+  }
+
+  .project-badge-group {
+    align-self: flex-start !important;
+  }
+}
+
+/* Touch Backdrop for Nav Menus */
+.navbar-dropdown-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(2px);
+  -webkit-backdrop-filter: blur(2px);
+}
+
+.hide-on-mobile-compact {
+  display: inline;
+}
+
+@media (max-width: 640px) {
+  .hide-on-mobile-compact {
+    display: none !important;
   }
 }
 

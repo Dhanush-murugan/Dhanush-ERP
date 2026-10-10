@@ -154,7 +154,7 @@ export default function Sidebar({
             <div className="sidebar-user-avatar">
               {user?.name ? user.name.charAt(0).toUpperCase() : "D"}
             </div>
-            {!collapsed && (
+            {(!collapsed || isOpenMobile) && (
               <div className="sidebar-user-info">
                 <div className="sidebar-user-name" title={user?.name || "Dhanush Murugan"}>
                   {user?.name || "Dhanush Murugan"}
@@ -169,7 +169,7 @@ export default function Sidebar({
                 </div>
               </div>
             )}
-            {!collapsed && (
+            {(!collapsed || isOpenMobile) && (
               <button
                 className="sidebar-logout-btn"
                 onClick={logout}
@@ -180,6 +180,18 @@ export default function Sidebar({
               </button>
             )}
           </div>
+
+          {/* Prominent Full-Width Sign Out Button for Mobile Drawer */}
+          {isOpenMobile && (
+            <button
+              className="mobile-drawer-signout-btn"
+              onClick={logout}
+              title="Sign Out of Dhanush Softwares ERP"
+            >
+              <LogOut size={15} />
+              <span>Sign Out ({user?.name ? user.name.split(" ")[0] : "Account"})</span>
+            </button>
+          )}
         </div>
       </aside>
     </>

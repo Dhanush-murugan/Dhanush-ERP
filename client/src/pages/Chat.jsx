@@ -20,7 +20,8 @@ import {
   Clock,
   Check,
   UserCheck,
-  ChevronRight
+  ChevronRight,
+  Trash2
 } from "lucide-react";
 import { useAuth } from "../context/AuthContext";
 import { api } from "../services/api";
@@ -134,22 +135,14 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
 
       if (activeContact?.id) {
         const freshMsgs = await api.getChatMessages(activeContact.id, currentUserId);
-        if (Array.isArray(freshMsgs) && freshMsgs.length > 0) {
-          setMessages((prevMsgs) => {
-            const map = new Map();
-            prevMsgs.forEach((m) => map.set(`${m.id || ""}-${m.created_at}`, m));
-            freshMsgs.forEach((m) => {
-              const norm = {
-                ...m,
-                text: m.message || m.text || "",
-                created_at: m.created_at || new Date().toISOString()
-              };
-              map.set(`${norm.id || ""}-${norm.created_at}`, norm);
-            });
-            return Array.from(map.values()).sort(
-              (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-            );
-          });
+        if (Array.isArray(freshMsgs)) {
+          setMessages(
+            freshMsgs.map((m) => ({
+              ...m,
+              text: m.message || m.text || "",
+              created_at: m.created_at || new Date().toISOString()
+            }))
+          );
         }
       }
 
@@ -186,15 +179,13 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
       }
       if (activeContact?.id) {
         const localMsgs = api.getCachedChatMessages(activeContact.id, currentUserId);
-        if (Array.isArray(localMsgs) && localMsgs.length > 0) {
-          setMessages(
-            localMsgs.map((m) => ({
-              ...m,
-              text: m.message || m.text || "",
-              created_at: m.created_at || new Date().toISOString()
-            }))
-          );
-        }
+        setMessages(
+          (localMsgs || []).map((m) => ({
+            ...m,
+            text: m.message || m.text || "",
+            created_at: m.created_at || new Date().toISOString()
+          }))
+        );
       }
     };
 
@@ -310,13 +301,35 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
     0
   );
 
+  // Active colleagues presence: strictly Lead Architect Aravind (EMP002) is active online.
+  // All other colleagues show realistic "Last seen" or "Offline" presence.
+  const ONLINE_COLLEAGUE_IDS = [2];
+
   const getEmployeePresence = (emp) => {
     if (!emp) return { status: "offline", label: "Offline" };
-    const role = (emp.role || "").toLowerCase();
-    if (role === "admin" || Number(emp.id) === 2 || emp.status === "active") {
-      return { status: "online", label: "Online" };
+    const empId = Number(emp.id);
+    if (ONLINE_COLLEAGUE_IDS.includes(empId)) {
+      return { status: "online", label: "online" };
     }
-    return { status: "offline", label: "Last seen recently" };
+    if (empId === 100) {
+      return { status: "offline", label: "Last seen today at 10:25 am" };
+    }
+    if (empId === 33) {
+      return { status: "offline", label: "Last seen today at 11:35 am" };
+    }
+    if (empId === 14) {
+      return { status: "offline", label: "Last seen today at 2:15 pm" };
+    }
+    if (empId === 3) {
+      return { status: "offline", label: "Last seen yesterday at 8:39 am" };
+    }
+    if (empId === 4) {
+      return { status: "offline", label: "Last seen yesterday at 8:54 am" };
+    }
+    if (empId === 5) {
+      return { status: "offline", label: "Last seen yesterday at 8:59 am" };
+    }
+    return { status: "offline", label: "Offline" };
   };
 
   const handleSelectContact = async (contact) => {
@@ -327,17 +340,15 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
     setShowMobileList(false);
     markContactOpened(contactId);
 
-    // Instant local messages for selected contact (0ms latency)
+    // Instant local messages for selected contact (0ms latency) - strictly reset to this contact!
     const localMsgs = api.getCachedChatMessages(contactId, currentUserId);
-    if (localMsgs.length > 0) {
-      setMessages(
-        localMsgs.map((m) => ({
-          ...m,
-          text: m.message || m.text || "",
-          created_at: m.created_at || new Date().toISOString()
-        }))
-      );
-    }
+    setMessages(
+      (localMsgs || []).map((m) => ({
+        ...m,
+        text: m.message || m.text || "",
+        created_at: m.created_at || new Date().toISOString()
+      }))
+    );
 
     // Mark as read immediately in UI
     setChatUsers((prev) =>
@@ -351,27 +362,37 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
       if (onUnreadCountChange) onUnreadCountChange(remaining);
     } catch {}
 
-    // Background fetch fresh messages - merge smoothly with local
+    // Background fetch fresh messages strictly for this contact
     try {
       const fresh = await api.getChatMessages(contactId, currentUserId);
-      if (Array.isArray(fresh) && fresh.length > 0) {
-        setMessages((prevMsgs) => {
-          const map = new Map();
-          prevMsgs.forEach((m) => map.set(`${m.id || ""}-${m.created_at}`, m));
-          fresh.forEach((m) => {
-            const norm = {
-              ...m,
-              text: m.message || m.text || "",
-              created_at: m.created_at || new Date().toISOString()
-            };
-            map.set(`${norm.id || ""}-${norm.created_at}`, norm);
-          });
-          return Array.from(map.values()).sort(
-            (a, b) => new Date(a.created_at).getTime() - new Date(b.created_at).getTime()
-          );
-        });
+      if (Array.isArray(fresh)) {
+        setMessages(
+          fresh.map((m) => ({
+            ...m,
+            text: m.message || m.text || "",
+            created_at: m.created_at || new Date().toISOString()
+          }))
+        );
       }
     } catch {}
+  };
+
+  const handleClearChat = () => {
+    if (!activeContact) return;
+    const confirmClear = window.confirm(
+      `Clear all chat messages with ${activeContact.name}? This will delete the entire conversation.`
+    );
+    if (!confirmClear) return;
+
+    api.clearChatHistory(activeContact.id, currentUserId);
+    setMessages([]);
+    setChatUsers((prev) =>
+      prev.map((c) =>
+        Number(c.id) === Number(activeContact.id)
+          ? { ...c, latest_message: "", latest_message_time: null, unread_count: 0 }
+          : c
+      )
+    );
   };
 
   // Auto scroll to bottom
@@ -444,10 +465,19 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
   const activePresence = activeContact ? getEmployeePresence(activeContact) : null;
   const COMMON_EMOJIS = ["❤️", "🔥", "🙌", "👏", "🚀", "✨", "💯", "👍", "🎉", "😄"];
 
+  // Filter messages strictly for active conversation between activeContact and current logged in user
+  const activeConversationMessages = (messages || []).filter((m) => {
+    if (!activeContact?.id) return false;
+    const contactId = Number(activeContact.id);
+    const sId = Number(m.sender_id);
+    const rId = Number(m.receiver_id);
+    return (sId === contactId && rId === currentUserId) || (sId === currentUserId && rId === contactId);
+  });
+
   // Group messages by Date for WhatsApp style date headers
   const groupedMessageBlocks = [];
   let lastDateGroup = null;
-  messages.forEach((m) => {
+  activeConversationMessages.forEach((m) => {
     const dStr = new Date(m.created_at || Date.now()).toDateString();
     if (dStr !== lastDateGroup) {
       lastDateGroup = dStr;
@@ -745,7 +775,7 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
                       {activeContact.name}
                       <span className="ig-header-role-pill">{activeContact.designation || "Staff"}</span>
                     </h4>
-                    <span className="ig-header-presence">
+                    <span className={`ig-header-presence ${activePresence?.status === "online" ? "is-online" : ""}`}>
                       {activePresence?.status === "online" ? "online" : activePresence?.label}
                     </span>
                   </div>
@@ -757,6 +787,15 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
                   </button>
                   <button className="ig-icon-action-btn" title="Video conference">
                     <Video size={19} />
+                  </button>
+                  <button
+                    className="ig-icon-action-btn text-danger-hover"
+                    onClick={handleClearChat}
+                    title={`Clear conversation history with ${activeContact.name}`}
+                    aria-label="Clear chat history"
+                    style={{ color: "#f87171" }}
+                  >
+                    <Trash2 size={18} />
                   </button>
                   <button className="ig-icon-action-btn" title="Contact info">
                     <Info size={18} />
@@ -784,9 +823,9 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
                 </div>
 
                 {/* Message Group Feed with WhatsApp Date Dividers */}
-                {messages.length === 0 ? (
+                {activeConversationMessages.length === 0 ? (
                   <div className="ig-empty-hint">
-                    No conversation history yet. Send a greeting or sprint update below!
+                    No conversation history with {activeContact.name} yet. Send a greeting or message below!
                   </div>
                 ) : (
                   groupedMessageBlocks.map((block, idx) => {
@@ -839,12 +878,6 @@ export default function Chat({ employees = [], onUnreadCountChange }) {
                             onDoubleClick={() => toggleHeartMessage(m.id)}
                             title="Double click to like ❤️"
                           >
-                            {!isMe && (
-                              <div className="whatsapp-bubble-sender-name font-semibold text-xs text-primary mb-1">
-                                {m.sender_name || activeContact.name || "Colleague"}
-                              </div>
-                            )}
-
                             <span className="ig-bubble-text">{msgContent}</span>
 
                             {/* WhatsApp Timestamp & Blue Double Checkmarks inside bubble */}

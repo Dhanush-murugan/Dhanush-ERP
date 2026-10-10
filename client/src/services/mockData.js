@@ -1603,7 +1603,29 @@ export const INITIAL_PROJECTS = [
 
 export const INITIAL_ATTENDANCE = [];
 export const INITIAL_LEAVES = [];
-export const INITIAL_PAYROLL = [];
+export const INITIAL_PAYROLL = INITIAL_EMPLOYEES.map((emp, index) => {
+  const baseSalary = Number(emp.salary) || 65000;
+  const basic = Math.round(baseSalary * 0.5);
+  const allowances = Math.round(baseSalary * 0.4);
+  const deductions = Math.round(baseSalary * 0.1);
+  const net = basic + allowances - deductions;
+  return {
+    id: index + 1,
+    employee_id: emp.id,
+    employee_code: emp.employee_code || `EMP${String(emp.id).padStart(3, "0")}`,
+    employee_name: emp.name,
+    designation: emp.designation || "Software Specialist",
+    department: emp.department_name || "Engineering & Technology",
+    payroll_month: "2026-09",
+    basic_salary: basic,
+    allowances: allowances,
+    deductions: deductions,
+    net_salary: net,
+    status: index === 3 || index === 8 ? "not_credited" : "credited",
+    transaction_ref: `HDFC${2026090000 + emp.id}`,
+    payment_date: "2026-09-30"
+  };
+});
 
 export const INITIAL_ANNOUNCEMENTS = [
   {
@@ -1708,230 +1730,70 @@ export const INITIAL_CHAT_MESSAGES = [
     "sender_id": 1,
     "receiver_id": 100,
     "sender_name": "Dhanush Murugan",
-    "message": "Hello Kumaran, testing team chat connection.",
-    "text": "Hello Kumaran, testing team chat connection.",
-    "is_read": false,
+    "message": "Hello Kumaran, please share the verified employee directory roster.",
+    "text": "Hello Kumaran, please share the verified employee directory roster.",
+    "is_read": true,
     "created_at": "2026-10-01T20:27:33.352Z"
   },
   {
     "id": 50,
-    "sender_id": 33,
-    "receiver_id": 100,
-    "sender_name": "Manoj Mudaliar",
-    "message": "ll",
-    "text": "ll",
-    "is_read": false,
-    "created_at": "2026-10-02T10:23:20.905Z"
+    "sender_id": 100,
+    "receiver_id": 1,
+    "sender_name": "Kumaran Chettiar",
+    "message": "Good day Dhanush! The quarterly headcount review for 100 enterprise employees is complete.",
+    "text": "Good day Dhanush! The quarterly headcount review for 100 enterprise employees is complete.",
+    "is_read": true,
+    "created_at": "2026-10-02T10:20:00.000Z"
   },
   {
     "id": 51,
     "sender_id": 1,
-    "receiver_id": 33,
+    "receiver_id": 100,
     "sender_name": "Dhanush Murugan",
-    "message": "hi",
-    "text": "hi",
+    "message": "Great work Kumaran! Let's ensure the bonus payouts are aligned with October payroll.",
+    "text": "Great work Kumaran! Let's ensure the bonus payouts are aligned with October payroll.",
     "is_read": true,
-    "created_at": "2026-10-02T20:25:57.728Z"
+    "created_at": "2026-10-02T10:25:00.000Z"
   },
   {
     "id": 52,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "hi",
-    "text": "hi",
+    "sender_id": 33,
+    "receiver_id": 1,
+    "sender_name": "Manoj Mudaliar",
+    "message": "Hi Dhanush sir! The backend microservice endpoints for attendance sync are deployed.",
+    "text": "Hi Dhanush sir! The backend microservice endpoints for attendance sync are deployed.",
     "is_read": true,
-    "created_at": "2026-10-02T20:26:25.933Z"
+    "created_at": "2026-10-02T11:30:00.000Z"
   },
   {
     "id": 53,
     "sender_id": 1,
     "receiver_id": 33,
     "sender_name": "Dhanush Murugan",
-    "message": "hi",
-    "text": "hi",
+    "message": "Excellent Manoj! Keep up the great velocity on the sprint.",
+    "text": "Excellent Manoj! Keep up the great velocity on the sprint.",
     "is_read": true,
-    "created_at": "2026-10-02T20:26:27.520Z"
+    "created_at": "2026-10-02T11:35:00.000Z"
   },
   {
     "id": 54,
-    "sender_id": 1,
-    "receiver_id": 100,
-    "sender_name": "Dhanush Murugan",
-    "message": "❤️",
-    "text": "❤️",
-    "is_read": false,
-    "created_at": "2026-10-02T20:31:45.839Z"
+    "sender_id": 14,
+    "receiver_id": 1,
+    "sender_name": "Shalini Sundaram",
+    "message": "Hi Dhanush! The design system token updates for Dark Mode and Mobile View are completed.",
+    "text": "Hi Dhanush! The design system token updates for Dark Mode and Mobile View are completed.",
+    "is_read": true,
+    "created_at": "2026-10-02T14:10:00.000Z"
   },
   {
     "id": 55,
-    "sender_id": 14,
-    "receiver_id": 1,
-    "sender_name": "Shalini Sundaram",
-    "message": "hi",
-    "text": "hi",
-    "is_read": true,
-    "created_at": "2026-10-02T21:17:38.124Z"
-  },
-  {
-    "id": 56,
     "sender_id": 1,
     "receiver_id": 14,
     "sender_name": "Dhanush Murugan",
-    "message": "Thank you Shalini, reviewed and looks great!",
-    "text": "Thank you Shalini, reviewed and looks great!",
+    "message": "Superb Shalini! Reviewed the UI and the styling is pixel-perfect.",
+    "text": "Superb Shalini! Reviewed the UI and the styling is pixel-perfect.",
     "is_read": true,
-    "created_at": "2026-10-02T22:13:27.767Z"
-  },
-  {
-    "id": 57,
-    "sender_id": 14,
-    "receiver_id": 1,
-    "sender_name": "Shalini Sundaram",
-    "message": "hi",
-    "text": "hi",
-    "is_read": true,
-    "created_at": "2026-10-02T22:17:16.072Z"
-  },
-  {
-    "id": 58,
-    "sender_id": 1,
-    "receiver_id": 14,
-    "sender_name": "Dhanush Murugan",
-    "message": "rrr",
-    "text": "rrr",
-    "is_read": true,
-    "created_at": "2026-10-02T22:17:48.859Z"
-  },
-  {
-    "id": 59,
-    "sender_id": 33,
-    "receiver_id": 1,
-    "sender_name": "Manoj Mudaliar",
-    "message": "hi",
-    "text": "hi",
-    "is_read": true,
-    "created_at": "2026-10-03T03:32:32.765Z"
-  },
-  {
-    "id": 60,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "hii",
-    "text": "hii",
-    "is_read": true,
-    "created_at": "2026-10-03T03:34:10.430Z"
-  },
-  {
-    "id": 61,
-    "sender_id": 33,
-    "receiver_id": 1,
-    "sender_name": "Manoj Mudaliar",
-    "message": "hi",
-    "text": "hi",
-    "is_read": true,
-    "created_at": "2026-10-03T03:34:38.618Z"
-  },
-  {
-    "id": 62,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "❤️",
-    "text": "❤️",
-    "is_read": true,
-    "created_at": "2026-10-03T03:39:08.235Z"
-  },
-  {
-    "id": 63,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "🎙️ Voice note (0:14)",
-    "text": "🎙️ Voice note (0:14)",
-    "is_read": true,
-    "created_at": "2026-10-03T03:39:09.111Z"
-  },
-  {
-    "id": 64,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "📁 Shared Project Milestone File",
-    "text": "📁 Shared Project Milestone File",
-    "is_read": true,
-    "created_at": "2026-10-03T03:39:12.580Z"
-  },
-  {
-    "id": 65,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "📁 Shared Sprint Architecture Document",
-    "text": "📁 Shared Sprint Architecture Document",
-    "is_read": true,
-    "created_at": "2026-10-03T04:10:54.105Z"
-  },
-  {
-    "id": 66,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "🎙️ Voice note (0:15)",
-    "text": "🎙️ Voice note (0:15)",
-    "is_read": true,
-    "created_at": "2026-10-03T04:10:57.213Z"
-  },
-  {
-    "id": 67,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "🎙️ Voice note (0:15)",
-    "text": "🎙️ Voice note (0:15)",
-    "is_read": true,
-    "created_at": "2026-10-03T04:10:59.169Z"
-  },
-  {
-    "id": 68,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "❤️",
-    "text": "❤️",
-    "is_read": true,
-    "created_at": "2026-10-03T04:11:00.905Z"
-  },
-  {
-    "id": 69,
-    "sender_id": 33,
-    "receiver_id": 1,
-    "sender_name": "Manoj Mudaliar",
-    "message": "🙌",
-    "text": "🙌",
-    "is_read": true,
-    "created_at": "2026-10-03T04:11:38.211Z"
-  },
-  {
-    "id": 70,
-    "sender_id": 1,
-    "receiver_id": 33,
-    "sender_name": "Dhanush Murugan",
-    "message": "hi",
-    "text": "hi",
-    "is_read": false,
-    "created_at": "2026-10-03T09:18:06.875Z"
-  },
-  {
-    "id": 71,
-    "sender_id": 14,
-    "receiver_id": 1,
-    "sender_name": "Shalini Sundaram",
-    "message": "hi",
-    "text": "hi",
-    "is_read": false,
-    "created_at": "2026-10-03T09:21:11.364Z"
+    "created_at": "2026-10-02T14:15:00.000Z"
   }
 ];
 export const INITIAL_PERFORMANCE = [];

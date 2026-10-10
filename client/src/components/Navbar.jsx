@@ -127,8 +127,8 @@ export default function Navbar({
         </button>
 
         <div className="navbar-breadcrumb">
-          <span className="breadcrumb-root">ERP</span>
-          <span className="breadcrumb-separator">/</span>
+          <span className="breadcrumb-root hide-on-mobile">ERP</span>
+          <span className="breadcrumb-separator hide-on-mobile">/</span>
           <h2 className="navbar-page-title" title={activeTabTitle}>
             {activeTabTitle}
           </h2>
@@ -160,9 +160,9 @@ export default function Navbar({
           <span className="navbar-clock-time tabular-numbers font-mono">{formattedTime}</span>
         </div>
 
-        {/* Quick Punch Button */}
+        {/* Quick Punch Button - Explicitly hidden on mobile to give dedicated room to D Avatar */}
         <button
-          className={`navbar-punch-btn ${isPunchedIn ? "punched-in" : "punched-out"}`}
+          className={`navbar-punch-btn hide-on-mobile ${isPunchedIn ? "punched-in" : "punched-out"}`}
           onClick={handleQuickPunch}
           title={isPunchedIn ? "Click to Punch Out" : "Click to Punch In"}
         >
@@ -288,7 +288,10 @@ export default function Navbar({
           <div
             className="navbar-user-trigger"
             onClick={() => setShowUserDropdown(!showUserDropdown)}
-            title="Account Menu"
+            title="Account Menu & Sign Out"
+            role="button"
+            tabIndex={0}
+            aria-label="Account Menu"
           >
             <div className="navbar-user-avatar">
               {user?.name ? user.name.charAt(0).toUpperCase() : "D"}
@@ -301,61 +304,73 @@ export default function Navbar({
           </div>
 
           {showUserDropdown && (
-            <div className="navbar-dropdown-menu user-dropdown-menu animate-scale-up">
-              <div className="dropdown-user-header">
-                <strong>{user?.name || "Dhanush Murugan"}</strong>
-                <p>{user?.email || "dhanush@gmail.com"}</p>
-                <div className="dropdown-role-pill">
-                  <Shield size={11} />
-                  <span>{user?.designation || "Super Admin"}</span>
+            <>
+              {/* Touch Backdrop to dismiss dropdown cleanly on mobile & desktop */}
+              <div
+                className="navbar-dropdown-backdrop"
+                onClick={() => setShowUserDropdown(false)}
+                aria-hidden="true"
+              />
+              <div className="navbar-dropdown-menu user-dropdown-menu animate-scale-up">
+                <div className="dropdown-user-header">
+                  <strong>{user?.name || "Dhanush Murugan"}</strong>
+                  <p>{user?.email || "dhanush@gmail.com"}</p>
+                  <div className="dropdown-role-pill">
+                    <Shield size={11} />
+                    <span>{user?.designation || (user?.role === "admin" ? "Super Admin" : "Employee")}</span>
+                  </div>
                 </div>
+
+                <div className="dropdown-divider" />
+
+                <button
+                  className="dropdown-menu-item"
+                  onClick={() => {
+                    onNavigate("payroll");
+                    setShowUserDropdown(false);
+                  }}
+                >
+                  <Briefcase size={14} />
+                  <span>Payroll & Payslips</span>
+                </button>
+
+                <button
+                  className="dropdown-menu-item"
+                  onClick={() => {
+                    onNavigate("attendance");
+                    setShowUserDropdown(false);
+                  }}
+                >
+                  <CalendarCheck size={14} />
+                  <span>Attendance Portal</span>
+                </button>
+
+                <button
+                  className="dropdown-menu-item"
+                  onClick={() => {
+                    onNavigate("projects");
+                    setShowUserDropdown(false);
+                  }}
+                >
+                  <User size={14} />
+                  <span>Assigned Projects</span>
+                </button>
+
+                <div className="dropdown-divider" />
+
+                <button
+                  className="dropdown-menu-item logout-item text-danger"
+                  onClick={() => {
+                    setShowUserDropdown(false);
+                    logout();
+                  }}
+                  title="Sign Out of Account"
+                >
+                  <LogOut size={15} />
+                  <span className="font-bold">Sign Out</span>
+                </button>
               </div>
-
-              <div className="dropdown-divider" />
-
-              <button
-                className="dropdown-menu-item"
-                onClick={() => {
-                  onNavigate("employees");
-                  setShowUserDropdown(false);
-                }}
-              >
-                <User size={14} />
-                <span>Employees Directory</span>
-              </button>
-
-              <button
-                className="dropdown-menu-item"
-                onClick={() => {
-                  onNavigate("attendance");
-                  setShowUserDropdown(false);
-                }}
-              >
-                <CalendarCheck size={14} />
-                <span>Attendance Portal</span>
-              </button>
-
-              <button
-                className="dropdown-menu-item"
-                onClick={() => {
-                  onNavigate("projects");
-                  setShowUserDropdown(false);
-                }}
-              >
-                <Briefcase size={14} />
-                <span>Strategic Projects</span>
-              </button>
-
-              <div className="dropdown-divider" />
-
-              <button
-                className="dropdown-menu-item logout-item text-danger"
-                onClick={logout}
-              >
-                <LogOut size={14} />
-                <span>Sign Out</span>
-              </button>
-            </div>
+            </>
           )}
         </div>
       </div>
