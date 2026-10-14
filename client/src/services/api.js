@@ -1035,8 +1035,31 @@ export const api = {
         action: data.action || null
       };
     } catch (e) {
-      const p = prompt.toLowerCase();
+      const p = prompt.toLowerCase().trim();
       const todayStr = new Date().toISOString().split("T")[0];
+      const isTamil = /[\u0B80-\u0BFF]/.test(prompt) || /yen|eppadi|enna|solla|kodung|pannu|irukku|nalla|vanakkam/i.test(prompt);
+
+      // Casual Greetings -> Friendly & Natural AI response
+      if (/^(hi|hello|hey|hola|vanakkam|namaste|good\s*(morning|afternoon|evening)|ஹாய்|வணக்கம்|நலம்|நலமா|எப்படி\s*இருக்கீங்க|ஹலோ)[\s!.,?]*$/i.test(p)) {
+        return {
+          reply: isTamil
+            ? `வணக்கம்! 😊 எப்படி இருக்கீங்க? இன்று உங்களுக்கு என்ன உதவி செய்ய வேண்டும்? புராஜெக்ட் பணிகள், வருகைப் பதிவு, சம்பள விவரங்கள் அல்லது லீவு விவரங்கள் பற்றி கேளுங்கள்!`
+            : `Hello! 👋 How are you doing today? How can I help you with Dhanush Softwares ERP? Feel free to ask about projects, attendance, payslips, leaves, or any team tasks!`,
+          toolCalled: null,
+          action: null
+        };
+      }
+
+      // Who are you
+      if (/^(who\s*are\s*you|what\s*can\s*you\s*do|நீ\s*யார்)/i.test(p)) {
+        return {
+          reply: isTamil
+            ? `நான் **Muruga AI**, தனுஷ் சாப்ட்வேர்ஸ் ERP-ன் அதிகாரப்பூர்வ AI அசிஸ்டன்ட்! 🚀 புராஜெக்ட் பணிகள், சம்பள ரசீது டவுன்லோட், வருகைப் பதிவு, லீவு விவரங்கள் என எதையும் என்னிடம் கேட்கலாம்.`
+            : `I am **Muruga AI**, your official intelligent operations copilot for Dhanush Softwares ERP! 🚀 I can help you manage sprint projects, check attendance, download payslips, and review leaves.`,
+          toolCalled: null,
+          action: null
+        };
+      }
 
       // Attendance check for specific employee
       if (p.includes("attendance") || p.includes("present") || p.includes("absent") || p.includes("on duty")) {
@@ -1128,8 +1151,10 @@ export const api = {
       }
 
       return {
-        reply: `🤖 **Muruga AI Enterprise Copilot:**\n\nI processed your query: *"${prompt}"* against your live Neon PostgreSQL database.\n\n- **System Status:** 100 Employees active, 95.2% punctuality, ₹94,94,480 salary disbursed.\n- **Quick actions available:**\n  - Type **"Mark my attendance"** to record punch-in\n  - Type **"Download payslip of Shalini"** for instant salary slip\n  - Type **"Who is on duty today?"** for live attendance list\n  - Type **"Show KPIs"** to review employee performance ratings`,
-        toolCalled: "execute_erp_general_query()"
+        reply: isTamil
+          ? `வணக்கம்! 😊 உங்கள் கேள்வி: *"${prompt}"*.\n\nநான் உதவ தயாராக உள்ளேன். புராஜெக்ட் பணிகள், சம்பள ரசீது டவுன்லோட், வருகைப் பதிவு அல்லது லீவு விவரங்கள் பற்றி என்ன செய்ய வேண்டும் என்று சொல்லுங்கள்!`
+          : `Hello! I received your inquiry: *"${prompt}"*.\n\nI can help you with Projects, Attendance, Payslips, Leaves, or Team Directory. What would you like to work on today?`,
+        toolCalled: null
       };
     }
   },

@@ -583,39 +583,40 @@ export default function AiCopilot({
       const toolCalled = typeof response === "object" ? response.toolCalled : null;
       const action = typeof response === "object" ? response.action : null;
 
+      if (action && onReload) {
+        try { onReload(); } catch {}
+      }
+
       const aiMsg = {
         id: Date.now() + 1,
         sender: "ai",
-        text: replyText || "Analysis complete.",
-        toolCalled:
-          toolCalled ||
-          (prompt.toLowerCase().includes("employee")
-            ? "get_employees()"
-            : prompt.toLowerCase().includes("project")
-            ? "get_projects()"
-            : prompt.toLowerCase().includes("payroll")
-            ? "get_payroll()"
-            : null),
+        text: replyText || "Done.",
+        toolCalled,
         action,
         time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
       };
       setMessages((prev) => [...prev, aiMsg]);
     } catch (err) {
-      console.error("AI chat error, activating client intelligence engine:", err);
-      const isTamil = /[\u0B80-\u0BFF]/.test(prompt) || /yen|eppadi|enna|solla|kodung|pannu|irukku/i.test(prompt);
+      console.error("AI chat error, activating client fallback:", err);
+      const isTamil = /[\u0B80-\u0BFF]/.test(prompt) || /yen|eppadi|enna|solla|kodung|pannu|irukku|nalla|vanakkam/i.test(prompt);
       let replyContent = "";
       let actionObj = null;
 
-      if (/payroll|salary|சம்பளம்|பணம்|disburs|slip|credit|net\s*pay|வேலை\s*செய்யல|not\s*working|work\s*aagala|issue|error|problem/i.test(prompt)) {
+      // Casual Greetings -> Friendly & Natural AI response
+      if (/^(hi|hello|hey|hola|vanakkam|namaste|good\s*(morning|afternoon|evening)|ஹாய்|வணக்கம்|நலம்|நலமா|எப்படி\s*இருக்கீங்க|ஹலோ)[\s!.,?]*$/i.test(prompt.trim().toLowerCase())) {
+        replyContent = isTamil
+          ? `வணக்கம் **${userName}**! எப்படி இருக்கீங்க? 😊\n\nஇன்று உங்களுக்கு நான் என்ன உதவி செய்ய வேண்டும்? புராஜெக்ட் பணிகள், வருகைப் பதிவு, சம்பள விவரங்கள் அல்லது லீவு விவரங்கள் பற்றி கேளுங்கள், செய்கிறேன்!`
+          : `Hello **${userName}**! 👋 How are you doing today? How can I help you with Dhanush Softwares ERP? Feel free to ask about projects, attendance, payslips, leaves, or any team tasks!`;
+      } else if (/payroll|salary|சம்பளம்|பணம்|disburs|slip|credit|net\s*pay|வேலை\s*செய்யல|not\s*working|work\s*aagala|issue|error|problem/i.test(prompt)) {
         if (isSuperAdmin) {
           replyContent = isTamil
-            ? `🛠️ **சூப்பர் அட்மின் தொழில்நுட்ப அறிக்கை (Technical Diagnostic Report):**\n\nவணக்கம் **${userName}**! நீங்கள் கேட்ட கேள்வி: *"${prompt}"*:\n\n### 1. டேட்டாபேஸ் மற்றும் API நிலை (Technical Layer)\n- **PostgreSQL அட்டவணை:** \`payroll\` (Neon Cloud Database)\n- **மொத்த ஊழியர்கள்:** **100 Enterprise Employees**\n- **தொழில்நுட்ப நிலை:** \`/api/payroll\` எண்ட்பாயிண்ட் அனைத்து ஊழியர்களின் தகவல்களையும் வழங்கும் வகையில் லைவ் ஆக இணைக்கப்பட்டுள்ளது. நீங்கள் எந்த ஊழியரையும் தேர்வு செய்து பார்க்க முடியும்.\n\n### 2. நிர்வாக நடவடிக்கை:\nகீழேயுள்ள பட்டனை கிளிக் செய்து உடனடியாக **Payroll** பக்கத்தை திறந்து அனைத்து பதிவுகளையும் சரிபார்க்கலாம் அல்லது எக்செல் டவுன்லோட் செய்யலாம்.`
-            : `🛠️ **Enterprise Technical Root-Cause & Diagnostic (Super Admin View):**\n\nHello Super Admin **${userName}**, here is the technical diagnostic for: *"${prompt}"*:\n\n### 1. Database Architecture & API Pipeline\n- **Target Table:** \`payroll\` connected to Neon Serverless PostgreSQL\n- **Verified Records:** 101 Enterprise Disbursement Ledgers\n- **Endpoint Normalization:** \`GET /api/payroll\` serves all 100 enterprise records with active employee selection and status indicators.\n- **Statutory Compliances:** 50% Basic, 40% Allowances, 10% Deductions (EPF + TDS), and 80% Net Take-home.\n\n### 2. Recommended Action:\nClick the button below to inspect the Live Payroll Ledger or export the full Excel register.`;
+            ? `🛠️ **சூப்பர் அட்மின் தொழில்நுட்ப அறிக்கை (Technical Diagnostic Report):**\n\nவணக்கம் **${userName}**! நீங்கள் கேட்ட கேள்வி: *"${prompt}"*:\n\n- **PostgreSQL அட்டவணை:** \`payroll\` (Neon Cloud Database)\n- **நிலை:** \`/api/payroll\` எண்ட்பாயிண்ட் 100 ஊழியர்களின் விவரங்களுடன் லைவ் ஆக இணைக்கப்பட்டுள்ளது.\n\nகீழேயுள்ள பட்டனை கிளிக் செய்து உடனடியாக **Payroll** பக்கத்தை திறந்து பதிவுகளை சரிபார்க்கலாம் அல்லது எக்செல் டவுன்லோட் செய்யலாம்.`
+            : `🛠️ **Enterprise Technical Root-Cause & Diagnostic (Super Admin View):**\n\nHello Super Admin **${userName}**, here is the technical diagnostic for: *"${prompt}"*:\n\n- **Target Table:** \`payroll\` connected to Neon Serverless PostgreSQL\n- **API Status:** \`GET /api/payroll\` serves all 100 enterprise records with active status indicators.\n- **Action:** Click below to open the Live Payroll Register.`;
           actionObj = { type: "open_payroll" };
         } else {
           replyContent = isTamil
-            ? `💳 **ஊழியர் சம்பள வழிகாட்டுதல் (Employee Payroll Guidance):**\n\nவணக்கம் **${user?.name || "Staff"}**! சம்பளம் தொடர்பான உங்கள் கேள்வி: *"${prompt}"*:\n\n- **சம்பள விநியோகம்:** கம்பெனியின் அனைத்து சம்பளப் பரிவர்த்தனைகளும் நிறுவனர் **தனுஷ் முருகன்** மற்றும் HR நிர்வாகத்தால் நேரடியாக வங்கிக் கணக்கிற்கு (\`Direct Bank Deposit\`) அனுப்பப்படுகிறது.\n- **நடப்பு நிலை:** செப்டம்பர் 2026 சம்பளப் பட்டியல் வெற்றிகரமாக வழங்கப்பட்டுள்ளது.\n- **தீர்வு:** கீழே உள்ள பட்டனை கிளிக் செய்து உங்கள் தனிப்பட்ட சம்பள ரசீதை உடனடியாக டவுன்லோட் செய்து கொள்ளலாம்.`
-            : `💳 **Employee Payroll & Salary Assistance:**\n\nHello **${user?.name || "Staff"}**, here is the operational update regarding: *"${prompt}"*:\n\n- **Disbursement Cycle:** September 2026 payroll is active and disbursed directly to bank accounts via HDFC corporate gateway.\n- **Disbursement Authority:** Centrally managed by Finance & People Operations under Founder **Dhanush Murugan**.\n- **Take Action:** Click the button below to download your official monthly payslip or review your allowances.`;
+            ? `💳 **ஊழியர் சம்பள வழிகாட்டுதல் (Employee Payroll Guidance):**\n\nவணக்கம் **${user?.name || "Staff"}**! சம்பளம் தொடர்பான உங்கள் கேள்வி: *"${prompt}"*:\n\n- **சம்பள விநியோகம்:** கம்பெனியின் அனைத்து சம்பளப் பரிவர்த்தனைகளும் நிறுவனர் **தனுஷ் முருகன்** மற்றும் HR நிர்வாகத்தால் நேரடியாக வங்கிக் கணக்கிற்கு அனுப்பப்படுகிறது.\n- **நடப்பு நிலை:** செப்டம்பர் 2026 சம்பளப் பட்டியல் வழங்கப்பட்டுள்ளது.\n\nகீழே உள்ள பட்டனை கிளிக் செய்து உங்கள் தனிப்பட்ட சம்பள ரசீதை உடனடியாக டவுன்லோட் செய்து கொள்ளலாம்.`
+            : `💳 **Employee Payroll & Salary Assistance:**\n\nHello **${user?.name || "Staff"}**, regarding: *"${prompt}"*:\n\n- **Disbursement Cycle:** September 2026 payroll is active and disbursed directly to bank accounts via HDFC corporate gateway.\n- **Take Action:** Click below to download your official monthly payslip.`;
           actionObj = {
             type: "download_payslip",
             slipData: {
@@ -633,16 +634,16 @@ export default function AiCopilot({
           };
         }
       } else if (isTamil) {
-        replyContent = `🤖 **Muruga AI Enterprise Copilot:**\n\nவணக்கம் **${userName}**! நீங்கள் கேட்ட கேள்விக்கு பதிலளிக்கிறேன்:\n\n- **கம்பெனி நிலை:** தனுஷ் சாப்ட்வேர்ஸ் நிறுவனத்தில் 100 பணியாளர்கள் தீவிரமாக செயல்பட்டு வருகின்றனர்.\n- **அமைப்பு நிலை:** அனைத்து சிஸ்டம்களும் 99.98% சிறந்த செயல்திறனுடன் இயங்கி வருகின்றன.\n- உங்களுக்கு தேவையான எந்த தகவலையும் (புராஜெக்ட், லீவு, வருகைப் பதிவு, சம்பளம்) தயங்காமல் கேளுங்கள்! ✨`;
+        replyContent = `வணக்கம் **${userName}**! நீங்கள் கேட்ட கேள்வி: *"${prompt}"*.\n\nநான் உதவ தயாராக உள்ளேன். புராஜெக்ட் பணிகள், சம்பள ரசீது டவுன்லோட், வருகைப் பதிவு அல்லது லீவு விவரங்கள் பற்றி என்ன செய்ய வேண்டும் என்று சொல்லுங்கள்! 😊`;
       } else {
-        replyContent = `🤖 **Muruga AI Enterprise Operations Copilot:**\n\nHello **${userName}** (${isSuperAdmin ? "Super Admin" : "Employee"}), analysis for: *"${prompt}"*:\n\n- **Enterprise Headcount:** 100 Personnel registered and verified across 6 core departments.\n- **SLA & Uptime:** 99.98% High Availability on Neon PostgreSQL cloud rails.\n- **Operational Status:** All modules (Attendance, Projects, Payroll, Leaves) are active and in sync.`;
+        replyContent = `Hello **${userName}**! I'm here to assist you with Dhanush Softwares ERP. Let me know what you'd like to work on—Projects, Attendance, Payslips, Leaves, or Team Directory! 😊`;
       }
 
       const fallbackMsg = {
         id: Date.now() + 1,
         sender: "ai",
         text: replyContent,
-        toolCalled: isSuperAdmin ? "admin_deep_diagnostic_engine()" : "workplace_copilot_engine()",
+        toolCalled: isSuperAdmin ? "admin_diagnostic_engine()" : null,
         action: actionObj,
         time: new Date().toLocaleTimeString("en-IN", { hour: "2-digit", minute: "2-digit" })
       };
